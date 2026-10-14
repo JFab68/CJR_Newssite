@@ -1,0 +1,122 @@
+import { XMLParser } from "fast-xml-parser";
+import { FEEDS, Feed, Level, Section, SECTIONS, OVERSIGHT_KEYWORDS, RELEVANCE_TERMS } from "./feeds";
+
+export type Story = {
+  id: string; title: string; link: string; source: string; date: string;
+  snippet: string; level: Level; sections: Section[]; score: number;
+};
+
+const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", textNodeName: "#text" });
+
+function text(v: unknown): string {
+  if (v == null) return "";
+  if (typeof v === "string" || typeof v === "number") return String(v);
+  if (Array.isArray(v)) return text(v[0]);
+  if (typeof v === "object") { const o = v as Record<string, unknown>; return text(o["#text"] ?? o["@_href"] ?? ""); }
+  return "";
+}
+
+function clean(html: string): string {
+  return html.replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&#8217;|&rsquo;/g, "’")
+    .replace(/&#8220;|&#8221;/g, '"').replace(/&#8211;|&#8212;/g, "–").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&#\d+;/g, "").replace(/\s+/g, " ").trim();
+}
+
+function truncate(s: string, n = 220) { return s.length > n ? s.slice(0, n).replace(/\s+\S*$/, "") + "…" : s; }
+
+function normTitle(t: string) { return t.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim().slice(0, 90); }
+
+export function oversightScore(s: string): number {
+  const t = s.toLowerCase();
+  let score = 0;
+  for (const [k, w] of Object.entries(OVERSIGHT_KEYWORDS)) if (t.includes(k)) score += w;
+  return score;
+}
+
+function classify(s: string): Section[] {
+  const t = s.toLowerCase();
+  return (Object.keys(SECTIONS) as Section[]).filter((k) => SECTIONS[k].terms.some((term) => t.includes(term)));
+}
+
+async function fetchFeed(feed: Feed): Promise<Story[]> {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const res = await fetch(feed.url, {
+      signal: ctrl.signal,
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; JusticeNowAZ/1.0; +https://justicenowaz.org)" },
+      next: { revalidate: 3600 },
+    });
+    clearTimeout(timer);
+    if (!res.ok) return [];
+    const xml = parser.parse(await res.text());
+    const rawItems = xml?.rss?.channel?.item ?? xml?.feed?.entry ?? xml?.["rdf:RDF"]?.item ?? [];
+    const items: any[] = Array.isArray(rawItems) ? rawItems : [rawItems];
+    const isGoogle = feed.url.includes("news.google.com");
+    const general = !feed.section && !["The Marshall Project", "The Appeal", "Bolts", "Prison Policy Initiative"].includes(feed.name);
+    const out: Story[] = [];
+    for (const it of items.slice(0, 40)) {
+      let title = clean(text(it.title));
+      let link = text(it.link);
+      if (!link && Array.isArray(it.link)) link = text(it.link.find((l: any) => l["@_rel"] !== "self") ?? it.link[0]);
+      if (!title || !link) continue;
+      let source = feed.name;
+      if (isGoogle) {
+        const src = text(it.source);
+        const m = title.match(/^(.*) - ([^-]+)$/);
+        if (m) { title = m[1].trim(); source = src && !src.startsWith("http") ? src : m[2].trim(); } else if (src) source = src;
+      }
+      const rawDesc = text(it.description ?? it.summary ?? it.content ?? it["content:encoded"]);
+      const snippet = isGoogle ? "" : truncate(clean(rawDesc));
+      const d = new Date(text(it.pubDate ?? it.published ?? it.updated ?? it["dc:date"]));
+      const date = isNaN(d.getTime()) ? new Date(0).toISOString() : d.toISOString();
+      const hay = `${title} ${snippet}`;
+      if (general && !RELEVANCE_TERMS.some((t) => hay.toLowerCase().includes(t))) continue;
+      const sections = new Set(classify(hay));
+      if (feed.section) sections.add(feed.section);
+      const score = oversightScore(hay);
+      if (score >= 3) sections.add("oversight");
+      out.push({ id: normTitle(title), title, link, source, date, snippet, level: feed.level, sections: [...sections], score });
+    }
+    return out;
+  } catch {
+    return []; // degrade gracefully: one bad feed never breaks the page
+  }
+}
+
+let cache: { at: number; stories: Story[] } | null = null;
+
+export async function getAllStories(): Promise<Story[]> {
+  if (cache && Date.now() - cache.at < 10 * 60 * 1000) return cache.stories;
+  const results = await Promise.allSettled(FEEDS.map(fetchFeed));
+  const byId = new Map<string, Story>();
+  const levelRank: Record<Level, number> = { local: 0, regional: 1, national: 2 };
+  for (const r of results) {
+    if (r.status !== "fulfilled") continue;
+    for (const s of r.value) {
+      const prev = byId.get(s.id);
+      if (!prev) { byId.set(s.id, s); continue; }
+      // merge duplicates: keep most local level, union sections, best snippet
+      prev.sections = [...new Set([...prev.sections, ...s.sections])];
+      if (levelRank[s.level] < levelRank[prev.level]) prev.level = s.level;
+      if (!prev.snippet && s.snippet) prev.snippet = s.snippet;
+      prev.score = Math.max(prev.score, s.score);
+    }
+  }
+  const cutoff = Date.now() - 30 * 24 * 3600 * 1000;
+  const stories = [...byId.values()]
+    .filter((s) => new Date(s.date).getTime() > cutoff)
+    .sort((a, b) => b.date.localeCompare(a.date));
+  if (stories.length) cache = { at: Date.now(), stories };
+  return stories;
+}
+
+export function oversightWatch(stories: Story[], n = 6) {
+  const weekAgo = Date.now() - 7 * 24 * 3600 * 1000;
+  return stories.filter((s) => s.score >= 4 && new Date(s.date).getTime() > weekAgo)
+    .sort((a, b) => b.score - a.score || b.date.localeCompare(a.date)).slice(0, n);
+}
+
+export const filterBy = (stories: Story[], o: { level?: Level; section?: Section }) =>
+  stories.filter((s) => (!o.level || s.level === o.level) && (!o.section || s.sections.includes(o.section)));
