@@ -25,7 +25,7 @@ const g = (q: string) =>
 // sorted into sections automatically by keyword matching.
 export const FEEDS: Feed[] = [
   // ---- Local: Phoenix / Maricopa County
-  { name: "Google News", url: g('"Phoenix police" OR "Maricopa County Sheriff" OR MCSO'), level: "local", section: "policing" },
+  { name: "Google News", url: g('"Phoenix police" OR "Maricopa County Sheriff" OR "Maricopa County sheriff\'s office"'), level: "local", section: "policing" },
   { name: "Google News", url: g('"Maricopa County Attorney" OR "Maricopa County Superior Court"'), level: "local", section: "courts" },
   { name: "Google News", url: g('"Maricopa County jail" OR "Lower Buckeye" OR "4th Avenue Jail"'), level: "local", section: "prisons" },
   { name: "Google News", url: g('Phoenix probation OR parole Maricopa'), level: "local", section: "probation-parole" },
@@ -36,7 +36,7 @@ export const FEEDS: Feed[] = [
 
   // ---- Regional: Arizona & Southwest
   { name: "Google News", url: g('Arizona "Department of Corrections" OR ADCRR OR "Arizona prison"'), level: "regional", section: "prisons" },
-  { name: "Google News", url: g('Arizona police misconduct OR "use of force" OR Tucson police'), level: "regional", section: "policing" },
+  { name: "Google News", url: g('"Tucson police" OR "Mesa police" OR "Arizona DPS" OR "Pima County Sheriff" OR "Arizona police"'), level: "regional", section: "policing" },
   { name: "Google News", url: g('"Arizona Supreme Court" OR "Arizona Court of Appeals" criminal'), level: "regional", section: "courts" },
   { name: "Google News", url: g('Arizona "Board of Executive Clemency" OR Arizona parole OR probation'), level: "regional", section: "probation-parole" },
   { name: "Google News", url: g('Arizona reentry OR "wrongful conviction" OR "Arizona Justice Project"'), level: "regional", section: "reentry" },
@@ -53,7 +53,7 @@ export const FEEDS: Feed[] = [
   { name: "Google News", url: g('prosecutor OR "district attorney" criminal justice reform'), level: "national", section: "courts" },
   { name: "Google News", url: g('"death in custody" OR "prison conditions" OR "jail deaths"'), level: "national", section: "prisons" },
   { name: "Google News", url: g('parole board OR probation reform'), level: "national", section: "probation-parole" },
-  { name: "Google News", url: g('exoneration OR "wrongful conviction" OR reentry program'), level: "national", section: "reentry" },
+  { name: "Google News", url: g('"reentry program" OR "prison reentry" OR exoneration OR "wrongful conviction"'), level: "national", section: "reentry" },
   { name: "Google News", url: g('prison oversight OR "inspector general" corrections OR "correctional ombudsman"'), level: "national", section: "oversight" },
 ];
 
