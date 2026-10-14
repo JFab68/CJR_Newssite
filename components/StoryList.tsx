@@ -20,7 +20,7 @@ export function StoryCard({ s, compact = false }: { s: Story; compact?: boolean 
       </div>
       <h3><a href={s.link} target="_blank" rel="noopener noreferrer">{s.title}</a></h3>
       {!compact && s.snippet && <p className="snippet">{s.snippet}</p>}
-      <p className="meta"><span className="src">{s.source}</span>{fmtDate(s.date) && <> · <time dateTime={s.date}>{fmtDate(s.date)}</time></>}</p>
+      <p className="meta"><span className="src">{s.source}</span>{fmtDate(s.date) ? <> · <time dateTime={s.date}>{fmtDate(s.date)}</time></> : null}</p>
     </article>
   );
 }
@@ -33,7 +33,7 @@ export default function StoryList({ stories, ads = true, compact = false, empty 
       {stories.map((s, i) => (
         <Fragment key={s.id + i}>
           <StoryCard s={s} compact={compact} />
-          {ads && (i + 1) % adsConfig.infeedEvery === 0 && i < stories.length - 1 && <AdSlot variant="infeed" />}
+          {ads && (i + 1) % adsConfig.infeedEvery === 0 && i < stories.length - 1 && <AdSlot variant="infeed" index={i} />}
         </Fragment>
       ))}
     </div>

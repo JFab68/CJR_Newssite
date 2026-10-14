@@ -4,7 +4,7 @@ import { adsConfig } from "@/lib/ads.config";
 type Variant = "leaderboard" | "sidebar" | "infeed" | "footer";
 const dims: Record<Variant, string> = { leaderboard: "728 × 90", sidebar: "300 × 250", infeed: "Native / Fluid", footer: "970 × 90" };
 
-export default function AdSlot({ variant }: { variant: Variant }) {
+export default function AdSlot({ variant, index = 0 }: { variant: Variant; index?: number }) {
   const { publisherId, slots } = adsConfig;
   const slot = slots[variant];
   if (publisherId && slot) {
@@ -13,7 +13,7 @@ export default function AdSlot({ variant }: { variant: Variant }) {
         <span className="ad-label">Advertisement</span>
         <ins className="adsbygoogle" style={{ display: "block" }} data-ad-client={publisherId} data-ad-slot={slot}
           data-ad-format={variant === "infeed" ? "fluid" : "auto"} data-full-width-responsive="true" />
-        <Script id={`ads-${variant}-${Math.random().toString(36).slice(2)}`} strategy="afterInteractive">
+        <Script id={`ads-${variant}-${index}`} strategy="afterInteractive">
           {`(adsbygoogle = window.adsbygoogle || []).push({});`}
         </Script>
       </div>
