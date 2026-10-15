@@ -1,0 +1,51 @@
+[
+ {
+  "date": "1993",
+  "title": "Board of Executive Clemency established",
+  "summary": "The board recommends commutations, pardons and reprieves to the governor and decides release and revocation matters.",
+  "sources": [
+   {
+    "label": "Arizona Auditor General – 2014 performance audit (PDF)",
+    "url": "https://www.azauditor.gov/sites/default/files/2023-11/14-105_Report_0.pdf"
+   }
+  ],
+  "tag": "Structure"
+ },
+ {
+  "date": "2014",
+  "title": "Audit: former chair resigned after conflict-of-interest probe",
+  "summary": "A state performance audit reported that a former chair and executive director resigned after a 2013 investigation substantiated conflict-of-interest concerns, and it flagged untimely victim notices.",
+  "sources": [
+   {
+    "label": "Arizona Auditor General (PDF)",
+    "url": "https://www.azauditor.gov/sites/default/files/2023-11/14-105_Report_0.pdf"
+   }
+  ],
+  "tag": "Audits"
+ },
+ {
+  "date": "2024",
+  "title": "Legislative sunset review recommends continuing the board",
+  "summary": "A Senate committee of reference report on the board's sunset review recommended continuing it.",
+  "sources": [
+   {
+    "label": "Arizona State Senate report (PDF)",
+    "url": "https://www.azleg.gov/iminute/senate/56leg/2r/2024CorReportBoardExecutiveClemency.pdf"
+   }
+  ],
+  "tag": "Audits",
+  "note": "Date taken from the report's legislative session (56th Leg., 2nd Regular)."
+ },
+ {
+  "date": "2024-09",
+  "title": "Audit: revocation hearings late, no structured decision-making",
+  "summary": "The Auditor General found about one-third of revocation hearings missed the 60-day target and that the board had not adopted a structured decision-making process.",
+  "sources": [
+   {
+    "label": "Arizona Auditor General (PDF)",
+    "url": "https://www.azauditor.gov/sites/default/files/2024-09/24-110_Report_0.pdf"
+   }
+  ],
+  "tag": "Audits"
+ }
+]

@@ -35,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/">Home</Link>
             <Link href="/breaking">Breaking & General</Link>
             <Link href="/county">Counties</Link>
+            <Link href="/agency">Agency Watch</Link>
             {Object.entries(LEVELS).map(([k, v]) => <Link key={k} href={`/level/${k}`}>{v.name}</Link>)}
             <span className="sep" aria-hidden="true">|</span>
             {Object.entries(SECTIONS).map(([k, v]) => <Link key={k} href={`/section/${k}`}>{v.name}</Link>)}
@@ -53,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <AdSlot variant="footer" />
             <div className="foot-grid">
               <div><strong className="foot-brand">Justice Now AZ</strong><p>An independent aggregator of criminal legal system news. Headlines link to the original publishers; all reporting belongs to them.</p></div>
-              <div><h2>Coverage</h2><ul className="plain">{Object.entries(LEVELS).map(([k, v]) => <li key={k}><Link href={`/level/${k}`}>{v.name}</Link></li>)}<li><Link href="/breaking">Breaking & General News</Link></li><li><Link href="/county">Arizona Counties</Link></li></ul></div>
+              <div><h2>Coverage</h2><ul className="plain">{Object.entries(LEVELS).map(([k, v]) => <li key={k}><Link href={`/level/${k}`}>{v.name}</Link></li>)}<li><Link href="/breaking">Breaking & General News</Link></li><li><Link href="/county">Arizona Counties</Link></li><li><Link href="/agency">Agency Watch</Link></li></ul></div>
               <div><h2>Organization</h2><ul className="plain"><li><Link href="/about">About</Link></li><li><Link href="/commentary">Commentary</Link></li><li><Link href="/advertise">Advertise</Link></li></ul></div>
             </div>
             <p className="copy">© {now.getFullYear()} Justice Now AZ</p>

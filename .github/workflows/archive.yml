@@ -1,0 +1,20 @@
+name: Grow Agency Watch archive
+on:
+  schedule: [{ cron: "17 13 * * 1" }]   # Mondays 6:17 AM Arizona
+  workflow_dispatch: {}
+permissions: { contents: write }
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npx -y tsx scripts/backfill-archive.ts --recent
+      - name: Commit (authored as the Vercel account owner so free-plan deploys aren't blocked)
+        run: |
+          git config user.name "JFab68"
+          git config user.email "42310697+JFab68@users.noreply.github.com"
+          git add data/archive
+          git diff --cached --quiet || (git commit -m "Weekly Agency Watch archive update" && git push)

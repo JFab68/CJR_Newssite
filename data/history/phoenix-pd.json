@@ -1,0 +1,142 @@
+[
+ {
+  "date": "2018",
+  "title": "Phoenix leads the nation in fatal police shootings",
+  "summary": "Phoenix officers were involved in 44 shootings in 2018, 23 of them fatal. That was the most fatal officer-involved shootings of any U.S. municipal agency that year, compared with an average of about 23 shootings a year from 2009 to 2017.",
+  "sources": [
+   {
+    "label": "National Policing Institute report",
+    "url": "https://www.policinginstitute.org/publication/analysis-of-2018-use-of-deadly-force-by-the-phoenix-police-department/"
+   },
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/general-news-508320b95d814859bdc32e573b35b57c"
+   }
+  ],
+  "tag": "Shootings"
+ },
+ {
+  "date": "2019-06-20",
+  "title": "Republic investigation: Phoenix outpaces peer cities in shootings",
+  "summary": "An Arizona Republic analysis found Phoenix police shootings had surpassed those in comparable cities for years. Houston, a larger city, had 18 shootings in 2018 to Phoenix's 44.",
+  "sources": [
+   {
+    "label": "The Arizona Republic",
+    "url": "https://www.azcentral.com/in-depth/news/local/arizona-investigations/2019/06/20/phoenix-police-shootings-outpace-other-major-us-cities/3651151002/"
+   }
+  ],
+  "tag": "Shootings"
+ },
+ {
+  "date": "2020-02-25",
+  "title": "Council votes 5-4 for civilian oversight (OAT)",
+  "summary": "Phoenix City Council approved the Office of Accountability and Transparency and a community review board, after a five-hour meeting.",
+  "sources": [
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/general-news-5695fb13d8d765e18d6c2e7254d68d13"
+   },
+   {
+    "label": "ABC15",
+    "url": "https://www.abc15.com/news/region-phoenix-metro/central-phoenix/phoenix-city-council-weighing-two-proposals-for-policing-the-police"
+   }
+  ],
+  "tag": "Oversight"
+ },
+ {
+  "date": "2020-10-17",
+  "title": "Protesters charged as a 'criminal street gang'",
+  "summary": "Phoenix police arrested 18 protesters, including three minors, and county prosecutors charged them with assisting a criminal street gang. ABC15's 'Politically Charged' investigation exposed the grand jury testimony behind the charges.",
+  "sources": [
+   {
+    "label": "ABC15 – Politically Charged",
+    "url": "https://www.abc15.com/news/local-news/investigations/protest-arrests/politically-charged-officials-create-fictional-gang-to-punish-phoenix-protesters"
+   }
+  ],
+  "tag": "Protest charges"
+ },
+ {
+  "date": "2021-02-12",
+  "title": "Prosecutors drop the protest gang case",
+  "summary": "Maricopa County Attorney Allister Adel moved to dismiss case CR 2020-139581, about a week after ABC15 published the grand jury transcript.",
+  "sources": [
+   {
+    "label": "ABC15",
+    "url": "https://www.abc15.com/news/local-news/investigations/protest-arrests/maricopa-county-attorneys-office-dismisses-case-against-protestors-charged-as-criminal-street-gang"
+   },
+   {
+    "label": "The Arizona Republic",
+    "url": "https://www.azcentral.com/story/news/local/phoenix-breaking/2021/02/12/prosecutors-dismiss-case-gang-charges-against-15-arrested-phoenix-protest/4470305001/"
+   }
+  ],
+  "tag": "Protest charges"
+ },
+ {
+  "date": "2021-05-19",
+  "title": "OAT ordinance adopted",
+  "summary": "The City Council adopted Ordinance G-6851, creating Chapter 20 of the city code and giving OAT its powers. A November 2020 version had failed 5-4.",
+  "sources": [
+   {
+    "label": "Ordinance G-6851",
+    "url": "https://phoenix.municipal.codes/enactments/OrdG-6851"
+   },
+   {
+    "label": "ABC15 – Nov. 2020 vote",
+    "url": "https://www.abc15.com/news/region-phoenix-metro/central-phoenix/phoenix-city-council-votes-against-establishing-citizen-police-review-office"
+   }
+  ],
+  "tag": "Oversight"
+ },
+ {
+  "date": "2021-06-03",
+  "title": "Judge finds police and prosecutors 'colluded' before the grand jury",
+  "summary": "Judge Jennifer Ryan-Touhill dismissed the gang charges with prejudice, finding that Sgt. Doug McBride and prosecutor April Sponsel 'colluded in their efforts to present the grand jury with false information regarding a non-existent gang.'",
+  "sources": [
+   {
+    "label": "ABC15",
+    "url": "https://www.abc15.com/news/local-news/investigations/protest-arrests/judge-dismisses-protest-gang-charges-blasts-prosecution"
+   }
+  ],
+  "tag": "Protest charges"
+ },
+ {
+  "date": "2021-08-05",
+  "title": "DOJ opens a pattern-or-practice investigation",
+  "summary": "The U.S. Justice Department's Civil Rights Division opened an investigation into the City of Phoenix and the Phoenix Police Department.",
+  "sources": [
+   {
+    "label": "U.S. DOJ – Phoenix case page",
+    "url": "https://www.justice.gov/crt/case/phoenix-police-department"
+   }
+  ],
+  "tag": "DOJ"
+ },
+ {
+  "date": "2024-06-13",
+  "title": "DOJ findings: excessive force and discrimination",
+  "summary": "DOJ found reasonable cause to believe Phoenix police use excessive force, including unjustified deadly force; unlawfully detain and arrest people experiencing homelessness; discriminate against Black, Hispanic and Native American people; violate protest rights; and discriminate against people with behavioral health disabilities.",
+  "sources": [
+   {
+    "label": "U.S. DOJ – Phoenix case page",
+    "url": "https://www.justice.gov/crt/case/phoenix-police-department"
+   }
+  ],
+  "tag": "DOJ"
+ },
+ {
+  "date": "2025-05-21",
+  "title": "DOJ closes the investigation and retracts its findings",
+  "summary": "Under the Trump administration, the Civil Rights Division closed the Phoenix investigation and retracted the 2024 findings, without a consent decree. City leaders said reforms would continue anyway.",
+  "sources": [
+   {
+    "label": "U.S. DOJ press release",
+    "url": "https://www.justice.gov/opa/pr/us-department-justices-civil-rights-division-dismisses-biden-era-police-investigations-and"
+   },
+   {
+    "label": "Axios Phoenix",
+    "url": "https://www.axios.com/local/phoenix/2025/05/21/doj-drops-phoenix-police-investigation"
+   }
+  ],
+  "tag": "DOJ"
+ }
+]

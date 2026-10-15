@@ -1,0 +1,95 @@
+[
+ {
+  "date": "1993",
+  "title": "Tent City opens",
+  "summary": "Sheriff Joe Arpaio set up an outdoor tent jail in his first year in office, promoting it as a cheap answer to jail overcrowding.",
+  "sources": [
+   {
+    "label": "The Arizona Republic",
+    "url": "https://www.azcentral.com/story/news/local/phoenix-breaking/2017/04/04/maricopa-county-sheriff-paul-penzone-tent-city-closing/100023562/"
+   },
+   {
+    "label": "New York Times",
+    "url": "https://www.nytimes.com/2017/04/04/us/arpaio-tent-city-maricopa-sheriff-penzone.html"
+   }
+  ],
+  "tag": "Tent City"
+ },
+ {
+  "date": "2013",
+  "title": "Melendres verdict: MCSO racially profiled Latino drivers",
+  "summary": "A federal court found that Arpaio's traffic patrols targeting immigrants racially profiled Latinos, which led to court-ordered reforms and a court monitor that Maricopa County taxpayers have paid for since.",
+  "sources": [
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/article/arizona-racial-profiling-arpaio-costs-immigrants-ec5be6a1ba7ee41f1ea58f6508e57ac9"
+   }
+  ],
+  "tag": "Melendres"
+ },
+ {
+  "date": "2017-04-04",
+  "title": "Sheriff Penzone announces Tent City closure",
+  "summary": "Penzone said the tents were 'not a crime deterrent' and 'not cost efficient,' and that closing them would save about $4.5 million a year. About 800 people were held there.",
+  "sources": [
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/general-news-a8c72ead92484a32965d08c62f5f7f3d"
+   },
+   {
+    "label": "NPR",
+    "url": "https://www.npr.org/sections/thetwo-way/2017/04/05/522707158/joe-arpaios-infamous-tent-city-jail-in-maricopa-county-will-shut-down"
+   }
+  ],
+  "tag": "Tent City"
+ },
+ {
+  "date": "2024-08",
+  "title": "Republic investigation: 43 jail deaths in both 2022 and 2023",
+  "summary": "The Arizona Republic found 43 deaths in county jails in each of 2022 and 2023, and that MCSO had initially underreported the totals.",
+  "sources": [
+   {
+    "label": "The Arizona Republic",
+    "url": "https://www.azcentral.com/story/news/local/phoenix/2024/08/06/what-to-know-about-the-republics-investigation-into-jail-deaths/74627369007/"
+   },
+   {
+    "label": "MCSO – In-custody deaths",
+    "url": "https://www.mcso.org/InmateInfo/InmateDeaths"
+   }
+  ],
+  "tag": "Deaths in custody"
+ },
+ {
+  "date": "2025-10-08",
+  "title": "Court audit: Melendres compliance costs overstated",
+  "summary": "A court-ordered review of $226 million that MCSO attributed to Melendres compliance (Feb. 2014 to Sept. 2024) found most of it was misattributed or improperly prorated. The county says total Melendres spending, including legal costs and the monitor, is about $323 million. Monitor-related costs were about $31 million through FY2024.",
+  "sources": [
+   {
+    "label": "Court order re: cost audit (PDF)",
+    "url": "https://assets.aclu.org/live/uploads/2012/07/Order-re-Cost-Audit-10.8.2025.pdf"
+   },
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/article/arizona-racial-profiling-arpaio-costs-immigrants-ec5be6a1ba7ee41f1ea58f6508e57ac9"
+   },
+   {
+    "label": "AZFamily",
+    "url": "https://www.azfamily.com/2025/10/10/audit-maricopa-county-overstated-costs-federal-oversight-sheriffs-office/"
+   }
+  ],
+  "tag": "Melendres"
+ },
+ {
+  "date": "2026-05-18",
+  "title": "Public health group tallies record jail deaths in 2025",
+  "summary": "The Arizona Public Health Association reported that MCSO listed 39 deaths in 2025, 41 after medical examiner review, and that the examiner's review added seven deaths to MCSO's 2024 count of 27.",
+  "sources": [
+   {
+    "label": "AZ Public Health Association",
+    "url": "https://azpha.org/2026/05/18/suicide-a-public-health-crisis-behind-bars/"
+   }
+  ],
+  "tag": "Deaths in custody",
+  "note": "Figures are AZPHA's; MCSO's own counts differ."
+ }
+]

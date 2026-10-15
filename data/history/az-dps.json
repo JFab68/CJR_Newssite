@@ -1,0 +1,43 @@
+[
+ {
+  "date": "2020",
+  "title": "Body cameras for a fraction of the force",
+  "summary": "AP reported that DPS was getting body cameras for about 12% of its force.",
+  "sources": [
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/general-news-c4d74399f5b74928bb9357ebb7fdd7e7"
+   }
+  ],
+  "tag": "Transparency",
+  "note": "Exact date not confirmed; year per AP context."
+ },
+ {
+  "date": "2020-05-25",
+  "title": "DPS trooper kills Dion Johnson",
+  "summary": "A DPS trooper shot and killed Dion Johnson on a Phoenix freeway the same day George Floyd was murdered. DPS troopers had no body cameras at the time.",
+  "sources": [
+   {
+    "label": "12News",
+    "url": "https://www.12news.com/article/news/local/valley/the-latest-on-the-death-of-dion-johnson-shot-and-killed-by-a-dps-trooper-the-same-day-of-the-george-floyd-murder/75-05caf6ac-2f4e-4504-a7ea-7c9b4fbe9230"
+   },
+   {
+    "label": "KJZZ",
+    "url": "https://kjzz.org/content/1597884/adot-traffic-camera-proxy-officer-body-cam-dion-johnson-case"
+   }
+  ],
+  "tag": "Use of force"
+ },
+ {
+  "date": "2020-09-21",
+  "title": "No charges for the trooper",
+  "summary": "The Maricopa County Attorney's Office declined to charge the trooper, finding his self-defense claim supported.",
+  "sources": [
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/general-news-811665537718d3a742dab8450e7a5132"
+   }
+  ],
+  "tag": "Use of force"
+ }
+]

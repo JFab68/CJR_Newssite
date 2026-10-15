@@ -1,0 +1,34 @@
+[
+ {
+  "date": "2020-04-21",
+  "title": "Carlos Ingram-Lopez dies in Tucson police custody",
+  "summary": "Ingram-Lopez died after officers restrained him face-down. His death wasn't made public until June, and three officers resigned before they could be fired.",
+  "sources": [
+   {
+    "label": "Tucson Sentinel",
+    "url": "https://www.tucsonsentinel.com/local/report/062420_tpd_death_details/details-revealed-ingram-lopez-death-police-custody-tpd-chief-offers-resign"
+   },
+   {
+    "label": "AP News",
+    "url": "https://apnews.com/article/9f2b2a3e66962f681a56d2ae92ef6158"
+   }
+  ],
+  "tag": "Deaths in custody"
+ },
+ {
+  "date": "2020-06",
+  "title": "Chief Magnus offers to resign; city manager declines",
+  "summary": "Chief Chris Magnus offered his resignation over the department's handling of the case. City Manager Michael Ortega declined to accept it.",
+  "sources": [
+   {
+    "label": "Tucson Sentinel",
+    "url": "https://www.tucsonsentinel.com/local/report/062520_romero_magnus/ingram-lopez-family-wants-magnus-stay-city-manager-rejects-tpd-chiefs-resignation/"
+   },
+   {
+    "label": "Arizona Daily Star",
+    "url": "https://tucson.com/news/local/article_601840e1-0c19-5fc1-b67e-46ea3eabcaf2.html"
+   }
+  ],
+  "tag": "Leadership"
+ }
+]
