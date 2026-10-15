@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
-import { FEEDS, Feed, Level, Section, SECTIONS, OVERSIGHT_KEYWORDS, RELEVANCE_TERMS } from "./feeds";
+import { FEEDS, Feed, Level, Section, SECTIONS, OVERSIGHT_KEYWORDS, BLOCKED_SOURCES, NEGATIVE_TERMS, STRONG_CJ_TERMS, LOCAL_CONTEXT_TERMS, LOCAL_EXCLUDE_TERMS, FOREIGN_TERMS } from "./feeds";
 
 export type Story = {
   id: string; title: string; link: string; source: string; date: string;
@@ -32,6 +32,38 @@ export function oversightScore(s: string): number {
   let score = 0;
   for (const [k, w] of Object.entries(OVERSIGHT_KEYWORDS)) if (t.includes(k)) score += w;
   return score;
+}
+
+const esc = (t: string) => t.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
+// Word-boundary matcher; a term ending in a letter stem (e.g. "sentenc") is matched as a prefix.
+const PREFIX_STEMS = new Set(["sentenc", "incarcerat", "exonerat", "convict", "indict", "correction"]);
+function matcher(terms: string[], prefix = false) {
+  const re = new RegExp("(?:^|[^a-z0-9])(?:" + terms.map((t) => esc(t) + (prefix || PREFIX_STEMS.has(t) ? "" : "(?![a-z0-9])")).join("|") + ")", "i");
+  return (s: string) => re.test(s);
+}
+const isNegative = matcher(NEGATIVE_TERMS);
+const isStrongCJ = matcher(STRONG_CJ_TERMS, true) // prefix: "officer" also matches "officers";
+const hasLocalContext = matcher(LOCAL_CONTEXT_TERMS);
+const isForeign = matcher(FOREIGN_TERMS);
+const hasOtherState = matcher(LOCAL_EXCLUDE_TERMS);
+function isBlockedSource(source: string, link: string) {
+  const s = source.toLowerCase();
+  let host = ""; try { host = new URL(link).hostname.toLowerCase(); } catch {}
+  return BLOCKED_SOURCES.some((b) => s.includes(b) || (b.includes(".") && host.includes(b)));
+}
+
+/** Returns a reason string if the story should be dropped, else null. */
+export function rejectReason(st: { title: string; snippet: string; source: string; link: string; level: Level }, general: boolean, context = ""): string | null {
+  const hay = `${st.title} ${st.snippet}`;
+  if (isBlockedSource(st.source, st.link)) return "blocked-source";
+  if (isNegative(st.title)) return "negative-term";
+  if (isForeign(st.title)) return "non-us";
+  if (general && !isStrongCJ(hay)) return "no-cj-term";
+  if (st.level === "local") {
+    if (!hasLocalContext(`${hay} ${st.source} ${context}`)) return "no-local-context";
+    if (hasOtherState(hay) && !/phoenix|maricopa|arizona/i.test(hay)) return "other-state";
+  }
+  return null;
 }
 
 function classify(s: string): Section[] {
@@ -72,7 +104,10 @@ async function fetchFeed(feed: Feed): Promise<Story[]> {
       const d = new Date(text(it.pubDate ?? it.published ?? it.updated ?? it["dc:date"]));
       const date = isNaN(d.getTime()) ? new Date(0).toISOString() : d.toISOString();
       const hay = `${title} ${snippet}`;
-      if (general && !RELEVANCE_TERMS.some((t) => hay.toLowerCase().includes(t))) continue;
+      // KJZZ / Phoenix New Times are local outlets themselves, so their source counts as local context.
+      const ctx = feed.section ? "" : feed.name;
+      const why = rejectReason({ title, snippet, source, link, level: feed.level }, general, ctx);
+      if (why) { if (process.env.NEWS_DEBUG) console.error(`DROP ${why}: [${feed.level}] ${title} — ${source}`); continue; }
       const sections = new Set(classify(hay));
       if (feed.section) sections.add(feed.section);
       const score = oversightScore(hay);

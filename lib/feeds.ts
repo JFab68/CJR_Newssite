@@ -10,7 +10,7 @@ export const LEVELS: Record<Level, { name: string; blurb: string }> = {
 export const SECTIONS: Record<Section, { name: string; blurb: string; terms: string[] }> = {
   policing: { name: "Policing", blurb: "Police conduct, use of force, and accountability", terms: ["police", "officer", "sheriff", "deputy", "use of force", "shooting", "arrest", "dps", "mcso", "phoenix police"] },
   courts: { name: "Prosecution & Courts", blurb: "Prosecutors, judges, sentencing, and the courts", terms: ["prosecutor", "county attorney", "district attorney", "court", "judge", "sentenc", "trial", "plea", "indict", "public defender", "bail"] },
-  prisons: { name: "Jails & Prisons", blurb: "ADCRR, county jails, and correctional facilities", terms: ["prison", "jail", "inmate", "incarcerat", "correction", "adcrr", "detention", "lower buckeye", "4th avenue jail", "solitary", "custody"] },
+  prisons: { name: "Jails & Prisons", blurb: "ADCRR, county jails, and correctional facilities", terms: ["prison", "jail", "inmate", "incarcerat", "correction", "adcrr", "detention", "lower buckeye jail", "4th avenue jail", "solitary", "custody"] },
   "probation-parole": { name: "Probation & Parole", blurb: "Community supervision and release decisions", terms: ["probation", "parole", "clemency", "supervision", "early release", "board of executive clemency"] },
   reentry: { name: "Post-conviction & Reentry", blurb: "Exonerations, release, and returning to society", terms: ["reentry", "re-entry", "exonerat", "wrongful conviction", "post-conviction", "expunge", "set aside", "record sealing", "formerly incarcerated", "released"] },
   oversight: { name: "Oversight & Transparency", blurb: "Watchdogs, audits, investigations, and public records", terms: ["oversight", "ombudsman", "audit", "transparency", "watchdog", "inspector general", "investigation", "public records", "monitor", "accountability"] },
@@ -27,7 +27,7 @@ export const FEEDS: Feed[] = [
   // ---- Local: Phoenix / Maricopa County
   { name: "Google News", url: g('"Phoenix police" OR "Maricopa County Sheriff" OR "Maricopa County sheriff\'s office"'), level: "local", section: "policing" },
   { name: "Google News", url: g('"Maricopa County Attorney" OR "Maricopa County Superior Court"'), level: "local", section: "courts" },
-  { name: "Google News", url: g('"Maricopa County jail" OR "Lower Buckeye" OR "4th Avenue Jail"'), level: "local", section: "prisons" },
+  { name: "Google News", url: g('"Maricopa County jail" OR "Lower Buckeye jail" OR "4th Avenue Jail"'), level: "local", section: "prisons" },
   { name: "Google News", url: g('Phoenix probation OR parole Maricopa'), level: "local", section: "probation-parole" },
   { name: "Google News", url: g('Phoenix reentry OR "formerly incarcerated" OR exonerated Maricopa'), level: "local", section: "reentry" },
   { name: "Google News", url: g('Phoenix police oversight OR "Office of Accountability and Transparency" OR "DOJ" Maricopa'), level: "local", section: "oversight" },
@@ -71,3 +71,50 @@ export const OVERSIGHT_KEYWORDS: Record<string, number> = {
   "public records": 3, "body camera": 2, "consent decree": 4, "wrongful": 2, settlement: 2,
   "solitary confinement": 3, "medical care": 2, neglect: 3, cover: 1, whistleblower: 4, monitor: 2,
 };
+
+// ---- Noise filtering -------------------------------------------------------
+
+// Sources (Google News publisher name or link host) that are never relevant:
+// real estate, sports, and non-US outlets.
+export const BLOCKED_SOURCES: string[] = [
+  "realtor.com", "zillow", "redfin", "trulia", "homes.com", "apartments.com", "movoto", "compass", "coldwell", "century 21", "re/max", "remax", "loopnet",
+  "espn", "bleacher report", "cbs sports", "fox sports", "yahoo sports", "sports illustrated", "si.com", "the athletic", "arizona sports", "arizonasports",
+  "pro football talk", "nba.com", "nfl.com", "mlb.com", "nhl.com", "azcardinals", "revenge of the birds", "bright side of the sun", "fansided", "sportskeeda", "on3", "247sports", "rivals",
+  "times of india", "timesofindia", "hindustan times", "ndtv", "india today", "the hindu", "economic times", "news18", "firstpost", "dawn.com", "the express tribune",
+  "bbc", "sabrangindia", "voicepk", "lawtext", "wion", "panow", "legal service india", "maktoob", "india.com", "haberler", "geo news", "the sunday guardian", "the guardian nigeria", "punch newspapers", "vanguard news", "vanguardngr", "abc.net.au", "sydney morning herald", "news.com.au", "stuff.co.nz", "nz herald", "ctv news", "global news", "toronto star",
+  "daily mail", "the sun (uk)", "mirror.co.uk", "the independent", "sky news", "gulf news", "khaleej times", "arab news", "south china morning post", "straits times", "manila", "inquirer.net", "jamaica",
+  "benzinga", "marketbeat", "globenewswire", "pr newswire", "business wire", "accesswire", "seeking alpha", "motley fool", "zacks", "tipranks",
+];
+
+// Titles/snippets containing any of these are dropped (sports, real estate,
+// business/tech noise). Matched on word boundaries.
+export const NEGATIVE_TERMS: string[] = [
+  "for sale", "listing", "listings", "bedroom", "bedrooms", "bathroom", "sq ft", "sqft", "square feet", "home for", "open house", "mortgage", "realtor", "real estate", "zillow",
+  "nfl", "nba", "mlb", "nhl", "wnba", "ncaa", "draft pick", "trade deadline", "traded", "free agent", "quarterback", "touchdown", "playoff", "playoffs", "cardinals", "suns", "diamondbacks", "coyotes", "mercury", "spring training", "box score", "fantasy football",
+  "stock", "stocks", "shares", "earnings", "ipo", "nasdaq", "dividend", "startup", "smartphone", "iphone", "crypto", "bitcoin", "recipe", "horoscope", "weather forecast",
+];
+
+// General feeds (no fixed section) must contain at least one of these.
+export const STRONG_CJ_TERMS: string[] = [
+  "police", "officer", "sheriff", "deputy", "deputies", "arrest", "arrested", "prosecutor", "county attorney", "district attorney", "attorney general", "public defender",
+  "court", "judge", "sentenc", "convict", "indict", "plea", "trial", "jury", "bail", "prison", "jail", "inmate", "incarcerat", "correction", "detention", "custody",
+  "probation", "parole", "clemency", "reentry", "re-entry", "exonerat", "wrongful conviction", "post-conviction", "expunge", "death row", "execution", "criminal", "felony", "misdemeanor",
+  "use of force", "misconduct", "cop", "cops", "murder", "doj", "department of justice", "civil rights", "policing", "crime", "homicide", "charged", "adcrr", "mcso",
+];
+
+// Local stories must mention Phoenix-area / Arizona context.
+export const LOCAL_CONTEXT_TERMS: string[] = [
+  "phoenix", "maricopa", "arizona", "ariz.", "az", "mesa", "tempe", "scottsdale", "chandler", "glendale", "gilbert", "peoria", "surprise", "avondale", "goodyear", "buckeye",
+  "tolleson", "el mirage", "fountain hills", "paradise valley", "queen creek", "laveen", "ahwatukee", "sun city", "valley", "adcrr", "dps", "lower buckeye jail", "4th avenue jail", "kjzz", "ktar", "azfamily", "sinema", "corona del sol", "abc15", "12news", "fox 10", "azcentral",
+];
+
+// Other states have "MCSO" agencies (Marion, Manatee, Monroe, Mecklenburg...).
+export const LOCAL_EXCLUDE_TERMS: string[] = [
+  "marion county", "manatee county", "monroe county", "mecklenburg", "macomb", "mclennan", "mclean county", "montgomery county", "martin county", "madison county", "mahoning", "florida", "north carolina", "michigan", "texas", "ohio", "oregon", "indiana",
+];
+
+// Titles naming these places are almost always non-US stories.
+export const FOREIGN_TERMS: string[] = [
+  "india", "indian", "delhi", "mumbai", "bihar", "haryana", "pakistan", "karachi", "lahore", "bangladesh", "nigeria", "lagos", "kenya", "ghana", "uganda", "dubai", "uae", "saudi",
+  "uk", "britain", "england", "scotland", "london", "ireland", "australia", "new zealand", "canada", "ontario", "philippines", "manila", "malaysia", "singapore", "sri lanka", "nepal", "bjp", "tihar", "rcmp", "first nation", "cree nation",
+];
