@@ -75,7 +75,7 @@ export function Timeline({ entries }: { entries: HistoryEntry[] }) {
           <div className="tl-date">{fmtHistDate(e.date)}{e.tag ? <span className="tl-tag">{e.tag}</span> : null}</div>
           <h3>{e.title}</h3><p>{e.summary}</p>
           {e.note ? <p className="tl-note">Note: {e.note}</p> : null}
-          <p className="tl-src">Sources: {e.sources.map((s, j) => <Fragment key={j}>{j ? " · " : ""}<a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a></Fragment>)}</p>
+          <p className="tl-src">Sources: {e.sources.map((s, j) => <Fragment key={j}>{j ? " · " : ""}<a href={s.url} {...(s.url.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{s.label}</a></Fragment>)}</p>
         </li>
       ))}
     </ol>

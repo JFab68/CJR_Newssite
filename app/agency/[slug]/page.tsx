@@ -17,6 +17,7 @@ export default async function AgencyCurrent({ params }: { params: { slug: string
     <div className="layout">
       <div>
         <AgencyHeader a={a} tab="" />
+        {a.slug === "adcrr" && <p className="tl-intro"><strong>Deep dive:</strong> <a href="/agency/adcrr/wassenaar">The Ricky Wassenaar case — from the 2004 Lewis tower standoff to the 2025 Tucson prison killings</a></p>}
         <h2 className="section-h">Current coverage <small>last 30 days · updated hourly</small></h2>
         <ItemList items={live} />
       </div>

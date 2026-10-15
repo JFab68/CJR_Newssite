@@ -1,5 +1,45 @@
 [
  {
+  "date": "2004-01-18",
+  "title": "Lewis prison tower standoff begins",
+  "summary": "Prisoners Ricky Wassenaar and Steven Coy overpowered staff in the Morey Unit kitchen at ASPC-Lewis in Buckeye with homemade knives, and Wassenaar, wearing an officer’s uniform, talked his way into a guard tower, where two officers were taken hostage. The standoff lasted 15 days, one of the longest prison hostage standoffs in U.S. history.",
+  "sources": [
+   {
+    "label": "State v. Wassenaar (Ariz. App. 2007)",
+    "url": "https://caselaw.findlaw.com/court/az-court-of-appeals/1311013.html"
+   },
+   {
+    "label": "NBC News / AP",
+    "url": "https://www.nbcnews.com/id/wbna8092449"
+   },
+   {
+    "label": "Full story: the Ricky Wassenaar case",
+    "url": "/agency/adcrr/wassenaar"
+   }
+  ],
+  "tag": "Incidents"
+ },
+ {
+  "date": "2004-02-01",
+  "title": "Standoff ends; Governor’s panel finds “critical gaps”",
+  "summary": "Wassenaar and Coy surrendered Feb. 1. A Blue Ribbon Panel appointed by Gov. Janet Napolitano issued 68 recommendations in March 2004, blaming “a series of small but critical gaps in security,” chronic underfunding, understaffing and inexperience; the Lewis warden was demoted and eight supervisors reassigned.",
+  "sources": [
+   {
+    "label": "NBC News / AP – panel findings",
+    "url": "https://www.nbcnews.com/id/wbna4451992"
+   },
+   {
+    "label": "Blue Ribbon Panel report (Arizona Memory Project)",
+    "url": "https://azmemory.recollectcms.com/nodes/view/129933"
+   },
+   {
+    "label": "Full story: the Ricky Wassenaar case",
+    "url": "/agency/adcrr/wassenaar"
+   }
+  ],
+  "tag": "Oversight"
+ },
+ {
   "date": "2012-03-22",
   "title": "Parsons v. Ryan filed",
   "summary": "The ACLU, ACLU of Arizona, Prison Law Office and partners sued the Arizona Department of Corrections in federal court over inadequate medical, mental health and dental care and the use of solitary confinement.",
@@ -143,12 +183,20 @@
  },
  {
   "date": "2025-04-04",
-  "title": "Killings in a Tucson prison sex-offender unit",
-  "summary": "Ricky Wassenaar, already serving 16 life sentences, told the Arizona Mirror he killed his cellmate and two other men at a Tucson state prison. ADCRR did not refer the case to prosecutors until late June; Pinal County indicted him on three murder counts in October 2025.",
+  "title": "Ricky Wassenaar kills three men at ASPC-Tucson",
+  "summary": "Wassenaar, serving 16 life sentences for the 2004 standoff, killed cellmate Saul Alvarez and prisoners Thorne Harnage and Donald Lashley in the Cimarron Unit, and confessed to reporters. ADCRR did not refer the case to prosecutors until late June; Pima County passed it to Pinal County, which indicted him in October 2025 and filed a death-penalty notice in May 2026. He has pleaded not guilty.",
   "sources": [
    {
-    "label": "Arizona Mirror",
+    "label": "Arizona Mirror (Jan. 2026)",
     "url": "https://azmirror.com/2026/01/12/confessed-prison-killer-ricky-wassenaar-finally-charged-in-april-murders-pleads-not-guilty/"
+   },
+   {
+    "label": "Arizona’s Family – death notice",
+    "url": "https://www.azfamily.com/2026/05/11/death-penalty-sought-against-confessed-tucson-prison-inmate-killer/"
+   },
+   {
+    "label": "Full story: the Ricky Wassenaar case",
+    "url": "/agency/adcrr/wassenaar"
    }
   ],
   "tag": "Incidents"
@@ -213,22 +261,5 @@
    }
   ],
   "tag": "Litigation"
- },
- {
-  "date": "needs-confirmation",
-  "title": "“Ricky Washington hearings”: needs confirmation",
-  "summary": "We could not find any Arizona prison hearing involving a 'Ricky Washington.' The closest match is the case of Ricky Wassenaar (above), whose court-appointed lawyer was Victoria Washington; prosecutors filed notice to seek the death penalty in May 2026. This entry will be corrected once confirmed.",
-  "sources": [
-   {
-    "label": "Arizona Mirror (Jan. 2026)",
-    "url": "https://azmirror.com/2026/01/12/confessed-prison-killer-ricky-wassenaar-finally-charged-in-april-murders-pleads-not-guilty/"
-   },
-   {
-    "label": "News From The States – death penalty notice",
-    "url": "https://www.newsfromthestates.com/article/prosecutors-seek-death-penalty-against-man-who-confessed-killing-3-tucson-prison"
-   }
-  ],
-  "tag": "Needs confirmation",
-  "note": "Unverified: identification is our best guess."
  }
 ]
