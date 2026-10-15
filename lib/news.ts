@@ -88,7 +88,7 @@ export function rejectReason(st: { title: string; snippet: string; source: strin
 }
 
 function classify(s: string): Section[] {
-  const t = s.toLowerCase();
+  const t = ` ${s.toLowerCase()} `;
   return (Object.keys(SECTIONS) as Section[]).filter((k) => SECTIONS[k].terms.some((term) => t.includes(term)));
 }
 
@@ -132,7 +132,6 @@ async function fetchFeed(feed: Feed): Promise<Story[]> {
       const sections = new Set(classify(hay));
       if (feed.section) sections.add(feed.section);
       const score = oversightScore(hay);
-      if (score >= 3) sections.add("oversight");
       if (feed.county && namesOtherState(`${hay} ${source}`) && !AZ_CONTEXT.test(hay)) { if (process.env.NEWS_DEBUG) console.error(`DROP other-state (county feed): ${title}`); continue; }
       const counties = feed.level === "national" ? [] : matchCounties(`${hay} ${source}`, feed.county, !!feed.county || feed.level === "local");
       if (feed.level === "local" && !counties.length) counties.push("maricopa");

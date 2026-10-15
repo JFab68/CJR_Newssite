@@ -1,5 +1,6 @@
 export type Level = "local" | "regional" | "national";
-export type Section = "policing" | "courts" | "prisons" | "probation-parole" | "reentry" | "oversight";
+// Praxis Initiative's Seven Ps — the site's primary subject taxonomy (in order).
+export type Section = "police" | "prosecution" | "pretrial" | "probation" | "prisons" | "parole" | "post-release";
 
 export const LEVELS: Record<Level, { name: string; blurb: string }> = {
   local: { name: "Local", blurb: "Phoenix & Maricopa County" },
@@ -8,12 +9,13 @@ export const LEVELS: Record<Level, { name: string; blurb: string }> = {
 };
 
 export const SECTIONS: Record<Section, { name: string; blurb: string; terms: string[] }> = {
-  policing: { name: "Policing", blurb: "Police conduct, use of force, and accountability", terms: ["police", "officer", "sheriff", "deputy", "use of force", "shooting", "arrest", "dps", "mcso", "phoenix police"] },
-  courts: { name: "Prosecution & Courts", blurb: "Prosecutors, judges, sentencing, and the courts", terms: ["prosecutor", "county attorney", "district attorney", "court", "judge", "sentenc", "trial", "plea", "indict", "public defender", "bail"] },
-  prisons: { name: "Jails & Prisons", blurb: "ADCRR, county jails, and correctional facilities", terms: ["prison", "jail", "inmate", "incarcerat", "correction", "adcrr", "detention", "lower buckeye jail", "4th avenue jail", "solitary", "custody"] },
-  "probation-parole": { name: "Probation & Parole", blurb: "Community supervision and release decisions", terms: ["probation", "parole", "clemency", "supervision", "early release", "board of executive clemency"] },
-  reentry: { name: "Post-conviction & Reentry", blurb: "Exonerations, release, and returning to society", terms: ["reentry", "re-entry", "exonerat", "wrongful conviction", "post-conviction", "expunge", "set aside", "record sealing", "formerly incarcerated", "released"] },
-  oversight: { name: "Oversight & Transparency", blurb: "Watchdogs, audits, investigations, and public records", terms: ["oversight", "ombudsman", "audit", "transparency", "watchdog", "inspector general", "investigation", "public records", "monitor", "accountability"] },
+  police: { name: "Police", blurb: "Police and sheriff conduct, use of force, and accountability", terms: ["police", "officer", "sheriff", "deputy", "deputies", "use of force", "shooting", "arrest", "dps", "mcso", "trooper"] },
+  prosecution: { name: "Prosecution", blurb: "Prosecutors, charging, plea deals, trials, and sentencing", terms: ["prosecutor", "county attorney", "district attorney", "attorney general", "court", "judge", "sentenc", "trial", "plea", "indict", "charged", "jury"] },
+  pretrial: { name: "Pretrial", blurb: "Bail, bond, pretrial detention, arraignment, and release conditions", terms: ["bail", " bond ", "bond hearing", "pretrial", "pre-trial", "awaiting trial", "arraign", "initial appearance", "release conditions", "held without", "public defender", "detention hearing"] },
+  probation: { name: "Probation", blurb: "Probation, supervision before or instead of prison, and revocations", terms: ["probation"] },
+  prisons: { name: "Prisons", blurb: "ADCRR, county jails, and correctional facilities", terms: ["prison", "jail", "inmate", "incarcerat", "correction", "adcrr", "detention", "lower buckeye jail", "4th avenue jail", "solitary", "custody", "death row", "execution"] },
+  parole: { name: "Parole", blurb: "Board of Executive Clemency, parole, clemency, and earned release", terms: ["parole", "clemency", "board of executive clemency", "early release", "earned release", "commutation", "pardon", "community supervision"] },
+  "post-release": { name: "Post-Release", blurb: "Reentry, returning citizens, and barriers after release", terms: ["reentry", "re-entry", "returning citizen", "formerly incarcerated", "exonerat", "wrongful conviction", "post-conviction", "expunge", "set aside", "record sealing", "voting rights", "restoration of rights", "second chance", "after prison", "released from prison"] },
 };
 
 import { COUNTIES } from "./counties";
@@ -32,22 +34,25 @@ const site = (host: string, window = "7d", terms = CJ_Q) => g(`site:${host} ${te
 // sorted into sections automatically by keyword matching.
 export const FEEDS: Feed[] = [
   // ---- Local: Phoenix / Maricopa County
-  { name: "Google News", url: g('"Phoenix police" OR "Maricopa County Sheriff" OR "Maricopa County sheriff\'s office"'), level: "local", section: "policing" },
-  { name: "Google News", url: g('"Maricopa County Attorney" OR "Maricopa County Superior Court"'), level: "local", section: "courts" },
+  { name: "Google News", url: g('"Phoenix police" OR "Maricopa County Sheriff" OR "Maricopa County sheriff\'s office"'), level: "local", section: "police" },
+  { name: "Google News", url: g('"Maricopa County Attorney" OR "Maricopa County Superior Court"'), level: "local", section: "prosecution" },
   { name: "Google News", url: g('"Maricopa County jail" OR "Lower Buckeye jail" OR "4th Avenue Jail"'), level: "local", section: "prisons" },
-  { name: "Google News", url: g('Phoenix probation OR parole Maricopa'), level: "local", section: "probation-parole" },
-  { name: "Google News", url: g('Phoenix reentry OR "formerly incarcerated" OR exonerated Maricopa'), level: "local", section: "reentry" },
-  { name: "Google News", url: g('Phoenix police oversight OR "Office of Accountability and Transparency" OR "DOJ" Maricopa'), level: "local", section: "oversight" },
+  { name: "Google News", url: g('Phoenix probation OR "Maricopa County Adult Probation"'), level: "local", section: "probation" },
+  { name: "Google News", url: g('Maricopa County bail OR bond OR "pretrial" OR "initial appearance"'), level: "local", section: "pretrial" },
+  { name: "Google News", url: g('Phoenix reentry OR "formerly incarcerated" OR exonerated Maricopa'), level: "local", section: "post-release" },
+  { name: "Google News", url: g('Phoenix police oversight OR "Office of Accountability and Transparency" OR "DOJ" Maricopa'), level: "local", section: "police" },
   { name: "Phoenix New Times", url: "https://www.phoenixnewtimes.com/phoenix/Rss.xml?section=11080373", level: "local" },
   { name: "KJZZ", url: "https://kjzz.org/rss.xml", level: "local" },
 
   // ---- Regional: Arizona & Southwest
   { name: "Google News", url: g('Arizona "Department of Corrections" OR ADCRR OR "Arizona prison"'), level: "regional", section: "prisons" },
-  { name: "Google News", url: g('"Tucson police" OR "Mesa police" OR "Arizona DPS" OR "Pima County Sheriff" OR "Arizona police"'), level: "regional", section: "policing" },
-  { name: "Google News", url: g('"Arizona Supreme Court" OR "Arizona Court of Appeals" criminal'), level: "regional", section: "courts" },
-  { name: "Google News", url: g('Arizona "Board of Executive Clemency" OR Arizona parole OR probation'), level: "regional", section: "probation-parole" },
-  { name: "Google News", url: g('Arizona reentry OR "wrongful conviction" OR "Arizona Justice Project"'), level: "regional", section: "reentry" },
-  { name: "Google News", url: g('Arizona prison oversight OR "Parsons v. Shinn" OR "Jensen v. Thornell" OR ombudsman'), level: "regional", section: "oversight" },
+  { name: "Google News", url: g('"Tucson police" OR "Mesa police" OR "Arizona DPS" OR "Pima County Sheriff" OR "Arizona police"'), level: "regional", section: "police" },
+  { name: "Google News", url: g('"Arizona Supreme Court" OR "Arizona Court of Appeals" criminal'), level: "regional", section: "prosecution" },
+  { name: "Google News", url: g('Arizona "Board of Executive Clemency" OR Arizona parole OR clemency'), level: "regional", section: "parole" },
+  { name: "Google News", url: g('Arizona "probation officer" OR "probation violation" OR "adult probation"'), level: "regional", section: "probation" },
+  { name: "Google News", url: g('Arizona bail OR "pretrial detention" OR "pretrial release"'), level: "regional", section: "pretrial" },
+  { name: "Google News", url: g('Arizona reentry OR "wrongful conviction" OR "Arizona Justice Project"'), level: "regional", section: "post-release" },
+  { name: "Google News", url: g('Arizona prison oversight OR "Parsons v. Shinn" OR "Jensen v. Thornell" OR ombudsman'), level: "regional", section: "prisons" },
   { name: "Google News", url: g('"New Mexico" OR Nevada OR Utah prison OR jail OR police accountability'), level: "regional" },
   { name: "Arizona Mirror", url: "https://azmirror.com/feed/", level: "regional" },
 
@@ -84,12 +89,14 @@ export const FEEDS: Feed[] = [
   { name: "The Appeal", url: "https://theappeal.org/feed/", level: "national" },
   { name: "Bolts", url: "https://boltsmag.org/feed/", level: "national" },
   { name: "Prison Policy Initiative", url: "https://www.prisonpolicy.org/feeds/all.atom", level: "national" },
-  { name: "Google News", url: g('"police accountability" OR "police misconduct" OR "consent decree"'), level: "national", section: "policing" },
-  { name: "Google News", url: g('prosecutor OR "district attorney" criminal justice reform'), level: "national", section: "courts" },
+  { name: "Google News", url: g('"police accountability" OR "police misconduct" OR "consent decree"'), level: "national", section: "police" },
+  { name: "Google News", url: g('prosecutor OR "district attorney" criminal justice reform'), level: "national", section: "prosecution" },
   { name: "Google News", url: g('"death in custody" OR "prison conditions" OR "jail deaths"'), level: "national", section: "prisons" },
-  { name: "Google News", url: g('parole board OR probation reform'), level: "national", section: "probation-parole" },
-  { name: "Google News", url: g('"reentry program" OR "prison reentry" OR exoneration OR "wrongful conviction"'), level: "national", section: "reentry" },
-  { name: "Google News", url: g('prison oversight OR "inspector general" corrections OR "correctional ombudsman"'), level: "national", section: "oversight" },
+  { name: "Google News", url: g('"parole board" OR clemency OR "earned release"'), level: "national", section: "parole" },
+  { name: "Google News", url: g('"probation reform" OR "probation violations" OR "community supervision"'), level: "national", section: "probation" },
+  { name: "Google News", url: g('"bail reform" OR "pretrial detention" OR "cash bail"'), level: "national", section: "pretrial" },
+  { name: "Google News", url: g('"reentry program" OR "prison reentry" OR exoneration OR "wrongful conviction"'), level: "national", section: "post-release" },
+  { name: "Google News", url: g('prison oversight OR "inspector general" corrections OR "correctional ombudsman"'), level: "national", section: "prisons" },
 
   // ---- Per-county feeds (all 15 Arizona counties; see lib/counties.ts)
   ...COUNTIES.flatMap((c) => c.queries.map((q): Feed => ({ name: "Google News", // smaller counties publish less, so look back 30 days

@@ -5,6 +5,7 @@ import { COUNTIES, countyBySlug, AZ_POP_2020 } from "@/lib/counties";
 import StoryList from "@/components/StoryList";
 import Sidebar from "@/components/Sidebar";
 import AdSlot from "@/components/AdSlot";
+import { SECTIONS, Section } from "@/lib/feeds";
 
 export const revalidate = 3600;
 export const generateStaticParams = () => COUNTIES.map((c) => ({ slug: c.slug }));
@@ -29,7 +30,12 @@ export default async function CountyPage({ params }: { params: { slug: string } 
         {stories.length === 0 && <section className="section-block empty-county"><p><strong>No recent stories — check back soon.</strong> We're watching local outlets for {c.name} County's courts, jails and law enforcement.</p>
           {c.resources?.length ? <p>Official sources: {c.resources.map((r, i) => <span key={r.url}>{i ? " · " : ""}<a href={r.url} target="_blank" rel="noopener noreferrer">{r.label}</a></span>)}</p> : null}</section>}
         {watch.length > 0 && <section className="watch-band small"><h2 className="band-h">Oversight Watch</h2><StoryList stories={watch} ads={false} compact /></section>}
-        <section className="section-block"><h2 className="sec-h">Courts, Jails & Accountability <small>Sheriff, county attorney, superior court, jail and probation</small></h2>
+        {stories.length > 0 && <section className="section-block"><h2 className="sec-h">By Subject <small>The Seven Ps</small></h2>
+          <p className="chips">{(Object.keys(SECTIONS) as Section[]).map((k) => <a key={k} href={`#p-${k}`}>{SECTIONS[k].name} ({accountability.filter((s) => s.sections.includes(k)).length})</a>)}</p></section>}
+        {(Object.keys(SECTIONS) as Section[]).map((k) => { const list = accountability.filter((s) => s.sections.includes(k)); return list.length ? (
+          <section key={k} id={`p-${k}`} className="section-block"><h2 className="sec-h"><Link href={`/section/${k}`}>{SECTIONS[k].name}</Link> <small>{SECTIONS[k].blurb}</small></h2>
+            <StoryList stories={list.slice(0, 8)} ads={false} compact /></section>) : null; })}
+        <section className="section-block"><h2 className="sec-h">All {c.name} County Justice Stories <small>Sheriff, county attorney, superior court, jail and probation</small></h2>
           <StoryList stories={accountability.slice(0, 40)} empty={`No recent ${c.name} County justice stories — check back soon.`} /></section>
         <AdSlot variant="infeed" index={900} />
         <section className="section-block"><h2 className="sec-h">Breaking & General News <small>Incidents, arrests and crime reports</small></h2>

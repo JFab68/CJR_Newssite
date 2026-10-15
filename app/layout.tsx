@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="masthead wrap">
           <div className="dateline">{`${today} · Phoenix, Arizona`}</div>
           <Link href="/" className="brand">Justice Now AZ</Link>
-          <p className="tagline">Watching the criminal legal system — from policing to reentry</p>
+          <p className="tagline">Watching the criminal legal system — from police to post-release</p>
         </header>
         <nav className="nav" aria-label="Main">
           <div className="wrap nav-inner">
