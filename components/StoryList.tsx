@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import type { Story } from "@/lib/news";
 import { SECTIONS, LEVELS } from "@/lib/feeds";
+import { COUNTIES } from "@/lib/counties";
 import { adsConfig } from "@/lib/ads.config";
 import AdSlot from "./AdSlot";
 
@@ -15,8 +16,9 @@ export function StoryCard({ s, compact = false }: { s: Story; compact?: boolean 
     <article className={`story${compact ? " compact" : ""}`}>
       <div className="kicker">
         <span className="lvl">{LEVELS[s.level].name}</span>
-        {s.sections.slice(0, 2).map((k) => <span key={k}>{SECTIONS[k].name}</span>)}
-        {s.breaking && <span>Breaking & General</span>}
+        {s.sections.slice(0, 2).map((k) => <span key={k} className={`tag tag-${k}`}>{SECTIONS[k].name}</span>)}
+        {(s.counties ?? []).slice(0, 2).map((c) => { const co = COUNTIES.find((x) => x.slug === c); return co ? <span key={c} className="cbadge">{co.name} Co.</span> : null; })}
+        {s.breaking && <span className="tag tag-breaking">Breaking & General</span>}
         {s.score >= 4 && <span className="watch">Oversight Watch</span>}
       </div>
       <h3><a href={s.link} target="_blank" rel="noopener noreferrer">{s.title}</a></h3>

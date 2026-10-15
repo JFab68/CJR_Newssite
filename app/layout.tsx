@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 import "./globals.css";
+import { Playfair_Display, Source_Sans_3 } from "next/font/google";
+
+const serif = Playfair_Display({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-serif", display: "swap" });
+const sans = Source_Sans_3({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-sans", display: "swap" });
 import AdSlot from "@/components/AdSlot";
 import { LEVELS, SECTIONS } from "@/lib/feeds";
 import { adsConfig } from "@/lib/ads.config";
@@ -17,14 +21,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const now = new Date();
   const today = now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "America/Phoenix" });
   return (
-    <html lang="en">
+    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body>
         {adsConfig.publisherId ? (
           <Script id="adsbygoogle-loader" strategy="afterInteractive" crossOrigin="anonymous"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsConfig.publisherId}`} />
         ) : null}
         <a className="skip" href="#main">Skip to content</a>
-        <div className="wrap"><AdSlot variant="leaderboard" /></div>
+        <div className="topbar"><div className="wrap"><AdSlot variant="leaderboard" /></div></div>
         <header className="masthead wrap">
           <div className="dateline">{`${today} · Phoenix, Arizona`}</div>
           <Link href="/" className="brand">Justice Now AZ</Link>
@@ -57,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div><h2>Coverage</h2><ul className="plain">{Object.entries(LEVELS).map(([k, v]) => <li key={k}><Link href={`/level/${k}`}>{v.name}</Link></li>)}<li><Link href="/breaking">Breaking & General News</Link></li><li><Link href="/county">Arizona Counties</Link></li><li><Link href="/agency">Agency Watch</Link></li></ul></div>
               <div><h2>Organization</h2><ul className="plain"><li><Link href="/about">About</Link></li><li><Link href="/commentary">Commentary</Link></li><li><Link href="/advertise">Advertise</Link></li></ul></div>
             </div>
-            <p className="copy">© {now.getFullYear()} Justice Now AZ</p>
+            <p className="copy">© {now.getFullYear()} Justice Now AZ · In partnership with <a href="https://www.praxisinitiative.org" target="_blank" rel="noopener noreferrer">Praxis Initiative</a></p>
           </div>
         </footer>
       </body>

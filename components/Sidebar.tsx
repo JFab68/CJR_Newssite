@@ -21,7 +21,7 @@ export default function Sidebar() {
         <h2 className="box-h">Arizona Counties</h2>
         <ul className="plain">{COUNTIES.map((c) => <li key={c.slug}><Link href={`/county/${c.slug}`}>{c.name}</Link></li>)}</ul>
       </section>
-      <AdSlot variant="sidebar" />
+      <AdSlot variant="sidebar" index={1} />
     </aside>
   );
 }

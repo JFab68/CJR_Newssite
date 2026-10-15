@@ -1,8 +1,30 @@
 import Script from "next/script";
-import { adsConfig } from "@/lib/ads.config";
+import { adsConfig, ADVERTISE_EMAIL } from "@/lib/ads.config";
 
 type Variant = "leaderboard" | "sidebar" | "infeed" | "footer";
-const dims: Record<Variant, string> = { leaderboard: "728 × 90", sidebar: "300 × 250", infeed: "Native / Fluid", footer: "970 × 90" };
+
+const mailto = `mailto:${ADVERTISE_EMAIL}?subject=${encodeURIComponent("Advertising on Justice Now AZ")}`;
+
+function HouseAd({ variant, index }: { variant: Variant; index: number }) {
+  // Alternate between "advertise with us" and the Praxis Initiative promo.
+  const praxis = (variant === "sidebar" || variant === "footer") ? index % 2 === 0 : index % 2 === 1;
+  if (praxis) {
+    return (
+      <a className="house house-praxis" href="https://www.praxisinitiative.org" target="_blank" rel="noopener noreferrer">
+        <span className="house-eyebrow">Praxis Initiative</span>
+        <span className="house-title">Reforming Arizona&rsquo;s criminal legal system — from police to post-release.</span>
+        <span className="house-cta">Learn more &amp; get involved →</span>
+      </a>
+    );
+  }
+  return (
+    <a className="house house-adv" href={mailto}>
+      <span className="house-eyebrow">Advertise with Justice Now AZ</span>
+      <span className="house-title">Reach Arizona readers who follow justice, public safety &amp; accountability.</span>
+      <span className="house-cta">Contact us for rates →</span>
+    </a>
+  );
+}
 
 export default function AdSlot({ variant, index = 0 }: { variant: Variant; index?: number }) {
   const { publisherId, slots } = adsConfig;
@@ -20,10 +42,9 @@ export default function AdSlot({ variant, index = 0 }: { variant: Variant; index
     );
   }
   return (
-    <div className={`ad ad-${variant} ad-placeholder`} role="complementary" aria-label="Advertisement placeholder">
+    <aside className={`ad ad-${variant} ad-house`} aria-label="Advertisement">
       <span className="ad-label">Advertisement</span>
-      <span className="ad-dims">{dims[variant]} · Your ad here</span>
-      <a href="/advertise">Advertise with Justice Now AZ</a>
-    </div>
+      <HouseAd variant={variant} index={index} />
+    </aside>
   );
 }
