@@ -25,6 +25,7 @@ const g = (q: string, window = "7d") =>
 
 const CJ_Q = "(police OR sheriff OR court OR prison OR jail OR prosecutor OR arrested OR charged OR judge OR probation OR parole)";
 const CJ_POLICY = "(prison OR corrections OR ADCRR OR police OR sheriff OR court OR sentencing OR prosecutor OR \"criminal justice\" OR jail OR parole)";
+const LOCAL_Q = "(police OR sheriff OR deputies OR court OR jail OR prosecutor OR arrested OR charged OR judge OR tribal OR probation)";
 const site = (host: string, window = "7d", terms = CJ_Q) => g(`site:${host} ${terms}`, window);
 
 // Add or remove feeds here. `section` is optional: when omitted, stories are
@@ -62,6 +63,21 @@ export const FEEDS: Feed[] = [
   { name: "Arizona Capitol Times", url: site("azcapitoltimes.com", "30d", CJ_POLICY), level: "regional" },
   { name: "KFYI 550 AM", url: site("kfyi.iheart.com"), level: "local" },
   { name: "KNST 790 AM", url: site("knst.iheart.com", "30d"), level: "regional" },
+
+  // ---- Small-county local outlets (Oct 2026). BLOX sites (WMI, Nogales Intl,
+  // EA Courier, Parker Pioneer) return 429 to server fetches -> Google News.
+  { name: "KYMA", url: "https://kyma.com/feed/", level: "regional", county: "yuma" },
+  { name: "KAWC", url: "https://www.kawc.org/news.rss", level: "regional", county: "yuma" },
+  { name: "KYMA", url: site("kyma.com", "30d", LOCAL_Q), level: "regional", county: "yuma" },
+  { name: "KAWC", url: site("kawc.org", "30d", LOCAL_Q), level: "regional", county: "yuma" },
+  { name: "White Mountain Independent", url: site("wmicentral.com", "30d", LOCAL_Q), level: "regional", county: "apache" },
+  { name: "Navajo Times", url: site("navajotimes.com", "30d", LOCAL_Q), level: "regional", county: "apache" },
+  { name: "Nogales International", url: site("nogalesinternational.com", "30d", LOCAL_Q), level: "regional", county: "santa-cruz" },
+  { name: "Eastern Arizona Courier", url: site("eacourier.com", "30d", LOCAL_Q), level: "regional", county: "graham" },
+  { name: "Copper Era", url: g('"Copper Era" OR "Greenlee County" ' + LOCAL_Q, "30d"), level: "regional", county: "greenlee" },
+  { name: "Parker Pioneer", url: g('"Parker Pioneer" OR "La Paz County" OR "Parker, Ariz" OR Quartzsite OR "Colorado River Indian Tribes"', "30d"), level: "regional", county: "la-paz" },
+  { name: "Google News", url: g('Parker Arizona ' + LOCAL_Q, "30d"), level: "regional", county: "la-paz" },
+  { name: "Google News", url: g('"Yuma County Sheriff" OR "La Paz County Sheriff"', "30d"), level: "regional" },
 
   // ---- National
   { name: "The Marshall Project", url: "https://www.themarshallproject.org/rss/recent.rss", level: "national" },
@@ -139,7 +155,7 @@ export const STRONG_CJ_TERMS: string[] = [
   "police", "officer", "sheriff", "deputy", "deputies", "arrest", "arrested", "prosecutor", "county attorney", "district attorney", "attorney general", "public defender",
   "court", "judge", "sentenc", "convict", "indict", "plea", "trial", "jury", "bail", "prison", "jail", "inmate", "incarcerat", "correction", "detention", "custody",
   "probation", "parole", "clemency", "reentry", "re-entry", "exonerat", "wrongful conviction", "post-conviction", "expunge", "death row", "execution", "criminal", "felony", "misdemeanor",
-  "use of force", "misconduct", "cop", "cops", "murder", "doj", "department of justice", "civil rights", "policing", "crime", "homicide", "charged", "adcrr", "mcso", "kidnap", "assault", "accused", "stabbing", "shooting", "carjack", "robbery", "dui",
+  "use of force", "misconduct", "cop", "cops", "murder", "doj", "department of justice", "civil rights", "policing", "crime", "homicide", "charged", "adcrr", "mcso", "kidnap", "assault", "accused", "stabbing", "shooting", "carjack", "robbery", "dui", "charges", "ycso", "pcso", "lpcso", "tribal police", "allegations", "border patrol", "smuggl",
 ];
 
 // Local stories must mention Phoenix-area / Arizona context.

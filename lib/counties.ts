@@ -12,6 +12,8 @@ export type County = {
   weakPlaces?: string[];
   /** Google News search queries for this county's criminal legal system. */
   queries: string[];
+  /** Official justice-system sites, shown when the county has no recent stories (URLs verified). */
+  resources?: { label: string; url: string }[];
 };
 
 export const COUNTIES: County[] = [
@@ -33,7 +35,7 @@ export const COUNTIES: County[] = [
     places: ["mohave county", "kingman", "lake havasu", "bullhead city", "fort mohave", "colorado city"],
     queries: ['"Mohave County Sheriff" OR "Kingman police" OR "Lake Havasu City police" OR "Bullhead City police"', '"Mohave County Attorney" OR "Mohave County Superior Court" OR "Mohave County jail"'] },
   { slug: "yuma", name: "Yuma", seat: "Yuma", pop2020: 203881,
-    places: ["yuma county", "yuma", "san luis, ariz", "somerton", "wellton"],
+    places: ["yuma county", "yuma", "ycso", "san luis, ariz", "somerton", "wellton"],
     queries: ['"Yuma County Sheriff" OR "Yuma police" OR "San Luis police" OR "Somerton police"', '"Yuma County Attorney" OR "Yuma County Superior Court" OR "Yuma County jail" OR "Arizona State Prison Complex-Yuma"'] },
   { slug: "coconino", name: "Coconino", seat: "Flagstaff", pop2020: 145101,
     places: ["coconino county", "flagstaff", "williams, ariz", "page, ariz", "tuba city", "grand canyon"],
@@ -63,6 +65,7 @@ export const COUNTIES: County[] = [
   { slug: "la-paz", name: "La Paz", seat: "Parker", pop2020: 16557,
     places: ["la paz county", "quartzsite", "parker, ariz", "colorado river indian tribes", "ehrenberg"],
     weakPlaces: ["parker"],
+    resources: [{ label: "La Paz County Sheriff's Office", url: "https://www.lapazsheriff.org/" }, { label: "La Paz County Attorney", url: "https://lapaz.gov/154/County-Attorney" }, { label: "La Paz County Courts", url: "https://www.lapaz.gov/156/Courts" }],
     queries: ['"La Paz County Sheriff" OR "La Paz County Attorney" OR "Parker police" Arizona OR Quartzsite police OR "Colorado River Indian Tribes" police'] },
   { slug: "greenlee", name: "Greenlee", seat: "Clifton", pop2020: 9563,
     places: ["greenlee county", "morenci", "clifton, ariz", "duncan, ariz"],
