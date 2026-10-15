@@ -57,12 +57,14 @@ const countyMatchers = COUNTIES.map((c) => ({ slug: c.slug, strong: matcher(c.pl
 /** Assigns Arizona counties by place-name matching (ambiguous names need Arizona context). */
 export function matchCounties(hay: string, fromCountyFeed?: string, azFeed = false): string[] {
   const out = new Set<string>();
-  if (fromCountyFeed) out.add(fromCountyFeed);
+  // A county feed's query matching is not enough: the county (or one of its
+  // places) must appear in the title/snippet, so statewide stories aren't mis-tagged.
   const az = azFeed || AZ_CONTEXT.test(hay);
   for (const m of countyMatchers) {
     if (m.strong(hay)) out.add(m.slug);
     else if (az && m.weak && m.weak(hay)) out.add(m.slug);
   }
+  void fromCountyFeed;
   return [...out];
 }
 function isBlockedSource(source: string, link: string) {

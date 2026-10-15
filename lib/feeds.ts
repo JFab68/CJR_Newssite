@@ -23,6 +23,10 @@ export type Feed = { name: string; url: string; level: Level; section?: Section;
 const g = (q: string, window = "7d") =>
   `https://news.google.com/rss/search?q=${encodeURIComponent(q + " when:" + window)}&hl=en-US&gl=US&ceid=US:en`;
 
+const CJ_Q = "(police OR sheriff OR court OR prison OR jail OR prosecutor OR arrested OR charged OR judge OR probation OR parole)";
+const CJ_POLICY = "(prison OR corrections OR ADCRR OR police OR sheriff OR court OR sentencing OR prosecutor OR \"criminal justice\" OR jail OR parole)";
+const site = (host: string, window = "7d", terms = CJ_Q) => g(`site:${host} ${terms}`, window);
+
 // Add or remove feeds here. `section` is optional: when omitted, stories are
 // sorted into sections automatically by keyword matching.
 export const FEEDS: Feed[] = [
@@ -45,6 +49,19 @@ export const FEEDS: Feed[] = [
   { name: "Google News", url: g('Arizona prison oversight OR "Parsons v. Shinn" OR "Jensen v. Thornell" OR ombudsman'), level: "regional", section: "oversight" },
   { name: "Google News", url: g('"New Mexico" OR Nevada OR Utah prison OR jail OR police accountability'), level: "regional" },
   { name: "Arizona Mirror", url: "https://azmirror.com/feed/", level: "regional" },
+
+  // ---- Arizona outlets suggested by John (Oct 2026). Gannett/BLOX/WordPress
+  // feeds block or rate-limit server fetches, so most use Google News site: queries.
+  { name: "Arizona Daily Star", url: "https://tucson.com/search/?f=rss&t=article&c=news/local/crime&l=50", level: "regional" },
+  { name: "The Arizona Republic", url: site("azcentral.com"), level: "local" },
+  { name: "Arizona Daily Star", url: site("tucson.com"), level: "regional" },
+  { name: "Arizona Daily Sun", url: site("azdailysun.com"), level: "regional" },
+  { name: "East Valley Tribune", url: site("eastvalleytribune.com", "30d"), level: "local" },
+  { name: "Prescott Daily Courier", url: site("dcourier.com", "30d"), level: "regional" },
+  { name: "Yuma Sun", url: site("yumasun.com", "30d"), level: "regional" },
+  { name: "Arizona Capitol Times", url: site("azcapitoltimes.com", "30d", CJ_POLICY), level: "regional" },
+  { name: "KFYI 550 AM", url: site("kfyi.iheart.com"), level: "local" },
+  { name: "KNST 790 AM", url: site("knst.iheart.com", "30d"), level: "regional" },
 
   // ---- National
   { name: "The Marshall Project", url: "https://www.themarshallproject.org/rss/recent.rss", level: "national" },
@@ -122,7 +139,7 @@ export const STRONG_CJ_TERMS: string[] = [
   "police", "officer", "sheriff", "deputy", "deputies", "arrest", "arrested", "prosecutor", "county attorney", "district attorney", "attorney general", "public defender",
   "court", "judge", "sentenc", "convict", "indict", "plea", "trial", "jury", "bail", "prison", "jail", "inmate", "incarcerat", "correction", "detention", "custody",
   "probation", "parole", "clemency", "reentry", "re-entry", "exonerat", "wrongful conviction", "post-conviction", "expunge", "death row", "execution", "criminal", "felony", "misdemeanor",
-  "use of force", "misconduct", "cop", "cops", "murder", "doj", "department of justice", "civil rights", "policing", "crime", "homicide", "charged", "adcrr", "mcso",
+  "use of force", "misconduct", "cop", "cops", "murder", "doj", "department of justice", "civil rights", "policing", "crime", "homicide", "charged", "adcrr", "mcso", "kidnap", "assault", "accused", "stabbing", "shooting", "carjack", "robbery", "dui",
 ];
 
 // Local stories must mention Phoenix-area / Arizona context.
