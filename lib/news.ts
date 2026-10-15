@@ -1,11 +1,12 @@
 import { XMLParser } from "fast-xml-parser";
 import { FEEDS, Feed, Level, Section, SECTIONS, OVERSIGHT_KEYWORDS, BLOCKED_SOURCES, NEGATIVE_TERMS, STRONG_CJ_TERMS, LOCAL_CONTEXT_TERMS, LOCAL_EXCLUDE_TERMS, FOREIGN_TERMS, BREAKING_TERMS, OTHER_STATE_TERMS } from "./feeds";
 import { COUNTIES } from "./counties";
+import { feedImage, enrichImages } from "./images";
 
 export type Story = {
   id: string; title: string; link: string; source: string; date: string;
   snippet: string; level: Level; sections: Section[]; score: number;
-  counties: string[]; breaking: boolean;
+  counties: string[]; breaking: boolean; image?: string;
 };
 
 
@@ -137,7 +138,7 @@ async function fetchFeed(feed: Feed): Promise<Story[]> {
       if (feed.level === "local" && !counties.length) counties.push("maricopa");
       // Routine incident reporting -> Breaking & General News (not filtered out).
       const breaking = feed.level !== "national" && score < 3 && isBreakingText(title);
-      out.push({ id: normTitle(title), title, link, source, date, snippet, level: feed.level, sections: [...sections], score, counties, breaking });
+      out.push({ id: normTitle(title), title, link, source, date, snippet, level: feed.level, sections: [...sections], score, counties, breaking, image: feedImage(it) });
     }
     return out;
   } catch {
@@ -161,6 +162,8 @@ export async function getAllStories(): Promise<Story[]> {
       prev.sections = [...new Set([...prev.sections, ...s.sections])];
       if (levelRank[s.level] < levelRank[prev.level]) prev.level = s.level;
       if (!prev.snippet && s.snippet) prev.snippet = s.snippet;
+      if (!prev.image && s.image) { prev.image = s.image; }
+      if (prev.link.includes("news.google.com") && !s.link.includes("news.google.com")) prev.link = s.link;
       prev.score = Math.max(prev.score, s.score);
       prev.counties = [...new Set([...prev.counties, ...s.counties])];
       prev.breaking = prev.breaking && s.breaking && prev.score < 3;
@@ -170,6 +173,8 @@ export async function getAllStories(): Promise<Story[]> {
   const stories = [...byId.values()]
     .filter((s) => new Date(s.date).getTime() > cutoff)
     .sort((a, b) => b.date.localeCompare(a.date));
+  // Photos: fill in og:image for the most recent stories (cached; time-boxed so builds stay fast).
+  await enrichImages(stories, (s) => s.link, { max: 400, concurrency: 16, budgetMs: 25000 });
   if (stories.length) cache = { at: Date.now(), stories };
   return stories;
 }

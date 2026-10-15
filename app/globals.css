@@ -211,3 +211,46 @@ main{padding:22px 20px 40px}
 .footer .plain li{border-bottom-color:#2b3c63}
 .footer .ad-label{color:#c7cede}
 .copy{color:#b8c1d6}
+
+/* ===== Photos ===== */
+.thumb{position:relative;overflow:hidden;background:#e9ecef;border-radius:4px}
+.thumb img{transition:transform .3s}
+.story:hover .thumb img{transform:scale(1.03)}
+.thumb-hero{aspect-ratio:16/9;width:100%;border-radius:6px}
+.thumb-wide{aspect-ratio:16/9;width:100%}
+.thumb-sq{aspect-ratio:1/1;width:88px;flex:0 0 88px}
+.thumb-fallback{position:absolute;inset:0;display:flex;align-items:flex-end;padding:10px 12px}
+.thumb-fallback span{font-family:var(--serif);font-weight:700;font-size:1rem;line-height:1.15;color:#fff;border-top:2px solid rgba(255,255,255,.7);padding-top:6px}
+.thumb-sq .thumb-fallback{padding:8px}.thumb-sq .thumb-fallback span{font-size:.72rem}
+.thumb-hero .thumb-fallback span{font-size:1.6rem}
+.tone-navy{background:var(--navy)}
+.tone-teal{background:var(--teal-dark)}
+.tone-brick{background:var(--accent)}
+.thumb-link{display:block}
+.thumb-link:hover{text-decoration:none}
+/* compact cards: square thumb on the right */
+.story.compact.has-thumb{display:flex;flex-direction:row-reverse;gap:12px;align-items:flex-start}
+.story.compact.has-thumb .story-body{flex:1;min-width:0}
+.story.compact.has-thumb .thumb-link{flex:0 0 88px}
+/* list cards (section/level pages): thumb left */
+.story-list .story.has-thumb:not(.compact):not(.hero){display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:560px){.story-list .story.has-thumb:not(.compact):not(.hero){grid-template-columns:110px minmax(0,1fr);gap:12px}.story-list .story.has-thumb:not(.compact):not(.hero) .snippet{display:none}}
+/* grid cards: thumb on top */
+.grid3 .story.has-thumb:not(.compact) .thumb-link{margin-bottom:8px}
+/* hero */
+.story.hero{padding-top:0}
+.story.hero .thumb-link{margin-bottom:12px}
+.story.hero h3{font-size:clamp(1.45rem,3vw,2.1rem);line-height:1.15}
+.lead-hero{margin:0 0 22px}
+.lead-hero .story{border-bottom:0}
+.watch-grid .lead h3{font-size:clamp(1.45rem,3vw,2rem)}
+/* agency photo cards */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:0 0 24px}
+.photo-card{border:1px solid var(--rule);border-radius:6px;background:var(--card);padding:0;overflow:hidden}
+.photo-card .thumb{border-radius:0}
+.photo-card .story-body{padding:10px 12px 12px}
+.photo-card h3{font-size:1rem;margin:0 0 6px}
+@media(max-width:860px){.photo-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.photo-grid{grid-template-columns:1fr}}
+.agency-list li.with-img{display:grid;grid-template-columns:72px minmax(0,1fr);column-gap:12px}
+.agency-list li.with-img .thumb-sq{width:72px;grid-row:span 2}

@@ -3,6 +3,7 @@ import path from "node:path";
 import { XMLParser } from "fast-xml-parser";
 import { Agency, ArchiveItem, HistoryEntry, matchesAgency } from "./agencies";
 import type { Story } from "./news";
+import { feedImage, enrichImages } from "./images";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", textNodeName: "#text" });
 const t = (v: any): string => (v == null ? "" : typeof v === "object" ? String(v["#text"] ?? "") : String(v));
@@ -22,7 +23,7 @@ async function fetchQuery(q: string): Promise<ArchiveItem[]> {
       let title = clean(t(it.title)); let source = t(it.source);
       const m = title.match(/^(.*) - ([^-]+)$/); if (m) { title = m[1].trim(); source ||= m[2].trim(); }
       const d = new Date(t(it.pubDate));
-      return { title, url: t(it.link), source, date: isNaN(d.getTime()) ? "" : d.toISOString(), snippet: "" };
+      return { title, url: t(it.link), source, date: isNaN(d.getTime()) ? "" : d.toISOString(), snippet: "", image: feedImage(it) };
     }).filter((i) => i.title && i.url && i.date);
   } catch { return []; }
 }
@@ -33,7 +34,9 @@ export async function getAgencyLive(a: Agency): Promise<ArchiveItem[]> {
   const byId = new Map<string, ArchiveItem>();
   for (const i of res.flat()) if (matchesAgency(a, i.title) && !byId.has(norm(i.title))) byId.set(norm(i.title), i);
   const cutoff = Date.now() - 30 * 864e5;
-  return [...byId.values()].filter((i) => new Date(i.date).getTime() > cutoff).sort((x, y) => y.date.localeCompare(x.date));
+  const out = [...byId.values()].filter((i) => new Date(i.date).getTime() > cutoff).sort((x, y) => y.date.localeCompare(x.date));
+  await enrichImages(out, (i) => i.url, { max: 30, concurrency: 10, budgetMs: 15000 });
+  return out;
 }
 
 function readJson<T>(p: string, dflt: T): T {
@@ -51,5 +54,5 @@ export async function getAgencyArchive(a: Agency): Promise<ArchiveItem[]> {
 }
 
 export function toStory(i: ArchiveItem): Story {
-  return { id: norm(i.title), title: i.title, link: i.url, source: i.source, date: i.date, snippet: i.snippet, level: "regional", sections: [], score: 0, counties: [], breaking: false };
+  return { id: norm(i.title), title: i.title, link: i.url, source: i.source, date: i.date, snippet: i.snippet, image: i.image, level: "regional", sections: [], score: 0, counties: [], breaking: false };
 }

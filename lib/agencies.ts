@@ -88,7 +88,7 @@ export const AGENCIES: Agency[] = [
 
 export const agencyBySlug = (s: string) => AGENCIES.find((a) => a.slug === s);
 
-export type ArchiveItem = { title: string; url: string; source: string; date: string; snippet: string };
+export type ArchiveItem = { title: string; url: string; source: string; date: string; snippet: string; image?: string };
 export type HistoryEntry = { date: string; title: string; summary: string; sources: { label: string; url: string }[]; note?: string; tag?: string };
 
 export function matchesAgency(a: Agency, hay: string): boolean {

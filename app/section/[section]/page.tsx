@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getAllStories, filterBy } from "@/lib/news";
 import { LEVELS, SECTIONS, Level, Section } from "@/lib/feeds";
-import StoryList from "@/components/StoryList";
+import StoryList, { StoryCard } from "@/components/StoryList";
 import Sidebar from "@/components/Sidebar";
 
 export const revalidate = 3600;
@@ -11,11 +11,14 @@ export const generateMetadata = ({ params }: { params: { section: string } }) =>
 export default async function SectionPage({ params }: { params: { section: string } }) {
   const section = params.section as Section;
   if (!SECTIONS[section]) notFound();
-  const stories = filterBy(await getAllStories(), { section });
+  const all = filterBy(await getAllStories(), { section });
+  const lead = all.find((s) => s.image) ?? all[0];
+  const stories = all.filter((s) => s !== lead);
   return (
     <div className="layout">
       <div>
         <header className="page-h"><h1>{SECTIONS[section].name}</h1><p>{SECTIONS[section].blurb}</p></header>
+        {lead && <section className="lead-hero" aria-label="Top story"><StoryCard s={lead} hero /></section>}
         {(Object.keys(LEVELS) as Level[]).map((l) => (
           <section key={l} className="section-block" aria-labelledby={`h-${l}`}>
             <h2 id={`h-${l}`} className="sec-h">{LEVELS[l].name} <small>{LEVELS[l].blurb}</small></h2>

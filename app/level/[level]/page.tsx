@@ -21,7 +21,7 @@ export default async function LevelPage({ params }: { params: { level: string } 
           <p className="chips">{(Object.keys(SECTIONS) as Section[]).map((k) => <Link key={k} href={`/section/${k}`}>{SECTIONS[k].name}</Link>)}</p>
         </header>
         {watch.length > 0 && <section className="watch-band small"><h2 className="band-h">Oversight Watch</h2><StoryList stories={watch} ads={false} compact /></section>}
-        <StoryList stories={stories.slice(0, 80)} />
+        <StoryList stories={stories.slice(0, 80)} hero />
       </div>
       <Sidebar />
     </div>

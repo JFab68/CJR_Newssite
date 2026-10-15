@@ -27,7 +27,7 @@ export default async function Home() {
         <h2 id="ow" className="band-h">Oversight Watch <small>Stories that show why oversight and transparency matter</small></h2>
         {watch.length ? (
           <div className="watch-grid">
-            {watch[0] && <div className="lead"><StoryCard s={watch[0]} /></div>}
+            {watch[0] && <div className="lead"><StoryCard s={watch[0]} hero /></div>}
             <div className="watch-rest">{watch.slice(1).map((s) => <StoryCard key={s.id} s={s} compact />)}</div>
           </div>
         ) : <p className="empty">Today’s featured oversight stories are loading — check back shortly.</p>}

@@ -12,6 +12,7 @@ jobs:
         with: { node-version: 20, cache: npm }
       - run: npm ci
       - run: npx -y tsx scripts/backfill-archive.ts --recent
+      - run: npx -y tsx scripts/backfill-images.ts --per=40
       - name: Commit (authored as the Vercel account owner so free-plan deploys aren't blocked)
         run: |
           git config user.name "JFab68"

@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import type { Agency, ArchiveItem, HistoryEntry } from "@/lib/agencies";
 import { fmtDate } from "./StoryList";
 import AdSlot from "./AdSlot";
+import Thumb from "./Thumb";
 
 export function agencyTabs(a: Agency) {
   const tabs = [{ slug: "", name: "Current" }];
@@ -23,13 +24,33 @@ export function AgencyHeader({ a, tab }: { a: Agency; tab: string }) {
   );
 }
 
+/** Lead photo story + grid of photo cards for an agency hub. */
+export function PhotoCards({ items, label }: { items: ArchiveItem[]; label: string }) {
+  if (!items.length) return null;
+  const [lead, ...rest] = items;
+  const meta = (i: ArchiveItem) => <p className="meta"><span className="src">{i.source}</span>{fmtDate(i.date) ? <> · <time dateTime={i.date}>{fmtDate(i.date)}</time></> : null}</p>;
+  return (
+    <>
+      <article className="story hero has-thumb lead-hero">
+        <a href={lead.url} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="thumb-link"><Thumb src={lead.image} label={label} tone="navy" className="thumb-hero" priority sizes="(max-width: 760px) 100vw, 800px" /></a>
+        <div className="story-body"><h3><a href={lead.url} target="_blank" rel="noopener noreferrer">{lead.title}</a></h3>{meta(lead)}</div>
+      </article>
+      {rest.length > 0 && <div className="photo-grid">{rest.map((i, n) => (
+        <article key={i.url + n} className="story photo-card has-thumb">
+          <a href={i.url} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="thumb-link"><Thumb src={i.image} label={label} tone={n % 2 ? "navy" : "teal"} className="thumb-wide" /></a>
+          <div className="story-body"><h3><a href={i.url} target="_blank" rel="noopener noreferrer">{i.title}</a></h3>{meta(i)}</div>
+        </article>))}</div>}
+    </>
+  );
+}
+
 export function ItemList({ items, empty = "No stories right now — check back soon." }: { items: ArchiveItem[]; empty?: string }) {
-  if (!items.length) return <p className="empty">{empty}</p>;
+  if (!items.length) return empty ? <p className="empty">{empty}</p> : null;
   return (
     <ul className="agency-list">
       {items.map((i, n) => (
         <Fragment key={i.url + n}>
-          <li><a href={i.url} target="_blank" rel="noopener noreferrer">{i.title}</a>
+          <li className={i.image ? "with-img" : undefined}>{i.image ? <Thumb src={i.image} label="" className="thumb-sq" sizes="72px" /> : null}<a href={i.url} target="_blank" rel="noopener noreferrer">{i.title}</a>
             <span className="meta"><span className="src">{i.source}</span>{fmtDate(i.date) ? <> · <time dateTime={i.date}>{fmtDate(i.date)}</time></> : null}</span></li>
           {(n + 1) % 15 === 0 && n < items.length - 1 && <li className="ad-li"><AdSlot variant="infeed" index={n} /></li>}
         </Fragment>

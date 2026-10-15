@@ -14,7 +14,7 @@ export default async function Breaking() {
       <div>
         <header className="page-h"><h1>Breaking & General News</h1><p>Routine incidents, arrests, missing persons and crime reports from across Arizona</p>
           <p className="chips">{COUNTIES.map((c) => <Link key={c.slug} href={`/county/${c.slug}`}>{c.name}</Link>)}</p></header>
-        <StoryList stories={stories.slice(0, 100)} />
+        <StoryList stories={stories.slice(0, 100)} hero />
       </div>
       <Sidebar />
     </div>
