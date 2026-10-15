@@ -16,6 +16,7 @@ export function StoryCard({ s, compact = false }: { s: Story; compact?: boolean 
       <div className="kicker">
         <span className="lvl">{LEVELS[s.level].name}</span>
         {s.sections.slice(0, 2).map((k) => <span key={k}>{SECTIONS[k].name}</span>)}
+        {s.breaking && <span>Breaking & General</span>}
         {s.score >= 4 && <span className="watch">Oversight Watch</span>}
       </div>
       <h3><a href={s.link} target="_blank" rel="noopener noreferrer">{s.title}</a></h3>

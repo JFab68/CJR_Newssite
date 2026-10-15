@@ -16,10 +16,12 @@ export const SECTIONS: Record<Section, { name: string; blurb: string; terms: str
   oversight: { name: "Oversight & Transparency", blurb: "Watchdogs, audits, investigations, and public records", terms: ["oversight", "ombudsman", "audit", "transparency", "watchdog", "inspector general", "investigation", "public records", "monitor", "accountability"] },
 };
 
-export type Feed = { name: string; url: string; level: Level; section?: Section };
+import { COUNTIES } from "./counties";
 
-const g = (q: string) =>
-  `https://news.google.com/rss/search?q=${encodeURIComponent(q + " when:7d")}&hl=en-US&gl=US&ceid=US:en`;
+export type Feed = { name: string; url: string; level: Level; section?: Section; county?: string };
+
+const g = (q: string, window = "7d") =>
+  `https://news.google.com/rss/search?q=${encodeURIComponent(q + " when:" + window)}&hl=en-US&gl=US&ceid=US:en`;
 
 // Add or remove feeds here. `section` is optional: when omitted, stories are
 // sorted into sections automatically by keyword matching.
@@ -55,6 +57,27 @@ export const FEEDS: Feed[] = [
   { name: "Google News", url: g('parole board OR probation reform'), level: "national", section: "probation-parole" },
   { name: "Google News", url: g('"reentry program" OR "prison reentry" OR exoneration OR "wrongful conviction"'), level: "national", section: "reentry" },
   { name: "Google News", url: g('prison oversight OR "inspector general" corrections OR "correctional ombudsman"'), level: "national", section: "oversight" },
+
+  // ---- Per-county feeds (all 15 Arizona counties; see lib/counties.ts)
+  ...COUNTIES.flatMap((c) => c.queries.map((q): Feed => ({ name: "Google News", // smaller counties publish less, so look back 30 days
+    url: g(q, c.pop2020 < 200000 ? "30d" : "7d"), level: c.slug === "maricopa" ? "local" : "regional", county: c.slug }))),
+];
+
+// County-feed stories naming another state are dropped (e.g. Douglas, Ga.).
+export const OTHER_STATE_TERMS: string[] = [
+  "alabama", "alaska", "arkansas", "california", "colorado", "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho", "illinois", "indiana", "iowa", "kansas", "kentucky",
+  "louisiana", "maine", "maryland", "massachusetts", "michigan", "minnesota", "mississippi", "missouri", "montana", "nebraska", "nevada", "new hampshire", "new jersey", "new mexico",
+  "new york", "north carolina", "north dakota", "ohio", "oklahoma", "oregon", "pennsylvania", "rhode island", "south carolina", "south dakota", "tennessee", "texas", "utah",
+  "vermont", "virginia", "washington", "wisconsin", "wyoming", "n.j.", "ga.", "calif.", "fla.", "wpg talk radio",
+];
+
+// "Breaking & General News": routine incidents, arrests, missing persons and
+// crime reports. These are kept (never filtered) but shown in their own section
+// and only reach Oversight Watch if they score on oversight keywords.
+export const BREAKING_TERMS: string[] = [
+  "missing", "seek", "seeking", "search for", "located", "found dead", "arrested", "arrest", "arrests", "suspect", "suspects", "shooting", "shot", "stabbing", "stabbed",
+  "homicide", "murder", "killed", "dies", "dead", "death investigation", "crash", "collision", "robbery", "burglary", "carjacking", "assault", "kidnapping", "amber alert", "silver alert",
+  "standoff", "pursuit", "chase", "barricade", "manhunt", "wanted", "fugitive", "booked", "charged", "identified", "investigating", "police say", "deputies say", "crime", "dui",
 ];
 
 // Only stories that match at least one of these terms are kept from general
@@ -89,7 +112,7 @@ export const BLOCKED_SOURCES: string[] = [
 // Titles/snippets containing any of these are dropped (sports, real estate,
 // business/tech noise). Matched on word boundaries.
 export const NEGATIVE_TERMS: string[] = [
-  "for sale", "listing", "listings", "bedroom", "bedrooms", "bathroom", "sq ft", "sqft", "square feet", "home for", "open house", "mortgage", "realtor", "real estate", "zillow",
+  "for sale", "listing", "listings", "bedroom", "bedrooms", "bathroom", "sq ft", "sqft", "square feet", "acres", "home for", "open house", "mortgage", "realtor", "real estate", "zillow",
   "nfl", "nba", "mlb", "nhl", "wnba", "ncaa", "draft pick", "trade deadline", "traded", "free agent", "quarterback", "touchdown", "playoff", "playoffs", "cardinals", "suns", "diamondbacks", "coyotes", "mercury", "spring training", "box score", "fantasy football",
   "stock", "stocks", "shares", "earnings", "ipo", "nasdaq", "dividend", "startup", "smartphone", "iphone", "crypto", "bitcoin", "recipe", "horoscope", "weather forecast",
 ];
@@ -110,7 +133,7 @@ export const LOCAL_CONTEXT_TERMS: string[] = [
 
 // Other states have "MCSO" agencies (Marion, Manatee, Monroe, Mecklenburg...).
 export const LOCAL_EXCLUDE_TERMS: string[] = [
-  "marion county", "manatee county", "monroe county", "mecklenburg", "macomb", "mclennan", "mclean county", "montgomery county", "martin county", "madison county", "mahoning", "florida", "north carolina", "michigan", "texas", "ohio", "oregon", "indiana",
+  "marion county", "manatee county", "monroe county", "mecklenburg", "macomb", "mclennan", "mclean county", "montgomery county", "martin county", "madison county", "mahoning", "florida", "north carolina", "michigan", "texas", "ohio", "oregon", "indiana", "costa mesa", "california", "los angeles",
 ];
 
 // Titles naming these places are almost always non-US stories.

@@ -66,3 +66,22 @@ main{padding:22px 20px 40px}
 .foot-brand{font-size:1.4rem}
 @media(max-width:760px){.foot-grid{grid-template-columns:1fr}}
 .copy{color:var(--muted);font-family:var(--sans);font-size:.75rem;margin-top:24px}
+
+/* Counties */
+.county-nav{padding-top:6px;padding-bottom:6px;border-top:1px solid var(--rule);font-size:.72rem;gap:12px}
+.nav-label{color:var(--muted)}
+.county-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 22px}
+.county-card{border-top:1px solid var(--ink);padding-top:6px}
+.county-card.lg{grid-column:span 2}
+.county-card.xl{grid-column:1/-1}
+.county-card.xl .county-list{columns:3;column-gap:26px}
+.county-card.lg .county-list{columns:2;column-gap:22px}
+.county-list li{break-inside:avoid;font-size:.95rem;line-height:1.3}
+.county-list .meta{display:block}
+.county-h{font-family:var(--sans);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 6px}
+.county-h small{text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted);margin-left:4px}
+.chips a[aria-current]{background:var(--ink);color:#fff}
+.county-table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:.9rem}
+.county-table th,.county-table td{text-align:left;padding:8px;border-bottom:1px solid var(--rule)}
+@media (max-width:900px){.county-grid{grid-template-columns:repeat(2,1fr)}.county-card.xl .county-list{columns:1}.county-card.lg .county-list{columns:1}}
+@media (max-width:560px){.county-grid{grid-template-columns:1fr}.county-card.lg{grid-column:auto}}

@@ -5,6 +5,7 @@ import "./globals.css";
 import AdSlot from "@/components/AdSlot";
 import { LEVELS, SECTIONS } from "@/lib/feeds";
 import { adsConfig } from "@/lib/ads.config";
+import { COUNTIES } from "@/lib/counties";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://justicenowaz.org"),
@@ -32,12 +33,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <nav className="nav" aria-label="Main">
           <div className="wrap nav-inner">
             <Link href="/">Home</Link>
+            <Link href="/breaking">Breaking & General</Link>
+            <Link href="/county">Counties</Link>
             {Object.entries(LEVELS).map(([k, v]) => <Link key={k} href={`/level/${k}`}>{v.name}</Link>)}
             <span className="sep" aria-hidden="true">|</span>
             {Object.entries(SECTIONS).map(([k, v]) => <Link key={k} href={`/section/${k}`}>{v.name}</Link>)}
             <span className="sep" aria-hidden="true">|</span>
             <Link href="/commentary">Commentary</Link>
             <Link href="/about">About</Link>
+          </div>
+          <div className="wrap nav-inner county-nav" aria-label="Counties">
+            <span className="nav-label">Counties:</span>
+            {COUNTIES.map((c) => <Link key={c.slug} href={`/county/${c.slug}`}>{c.name}</Link>)}
           </div>
         </nav>
         <main id="main" className="wrap">{children}</main>
@@ -46,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <AdSlot variant="footer" />
             <div className="foot-grid">
               <div><strong className="foot-brand">Justice Now AZ</strong><p>An independent aggregator of criminal legal system news. Headlines link to the original publishers; all reporting belongs to them.</p></div>
-              <div><h2>Coverage</h2><ul className="plain">{Object.entries(LEVELS).map(([k, v]) => <li key={k}><Link href={`/level/${k}`}>{v.name}</Link></li>)}</ul></div>
+              <div><h2>Coverage</h2><ul className="plain">{Object.entries(LEVELS).map(([k, v]) => <li key={k}><Link href={`/level/${k}`}>{v.name}</Link></li>)}<li><Link href="/breaking">Breaking & General News</Link></li><li><Link href="/county">Arizona Counties</Link></li></ul></div>
               <div><h2>Organization</h2><ul className="plain"><li><Link href="/about">About</Link></li><li><Link href="/commentary">Commentary</Link></li><li><Link href="/advertise">Advertise</Link></li></ul></div>
             </div>
             <p className="copy">© {now.getFullYear()} Justice Now AZ</p>

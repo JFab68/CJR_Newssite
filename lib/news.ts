@@ -1,10 +1,14 @@
 import { XMLParser } from "fast-xml-parser";
-import { FEEDS, Feed, Level, Section, SECTIONS, OVERSIGHT_KEYWORDS, BLOCKED_SOURCES, NEGATIVE_TERMS, STRONG_CJ_TERMS, LOCAL_CONTEXT_TERMS, LOCAL_EXCLUDE_TERMS, FOREIGN_TERMS } from "./feeds";
+import { FEEDS, Feed, Level, Section, SECTIONS, OVERSIGHT_KEYWORDS, BLOCKED_SOURCES, NEGATIVE_TERMS, STRONG_CJ_TERMS, LOCAL_CONTEXT_TERMS, LOCAL_EXCLUDE_TERMS, FOREIGN_TERMS, BREAKING_TERMS, OTHER_STATE_TERMS } from "./feeds";
+import { COUNTIES } from "./counties";
 
 export type Story = {
   id: string; title: string; link: string; source: string; date: string;
   snippet: string; level: Level; sections: Section[]; score: number;
+  counties: string[]; breaking: boolean;
 };
+
+
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", textNodeName: "#text" });
 
@@ -46,6 +50,21 @@ const isStrongCJ = matcher(STRONG_CJ_TERMS, true) // prefix: "officer" also matc
 const hasLocalContext = matcher(LOCAL_CONTEXT_TERMS);
 const isForeign = matcher(FOREIGN_TERMS);
 const hasOtherState = matcher(LOCAL_EXCLUDE_TERMS);
+const isBreakingText = matcher(BREAKING_TERMS);
+const namesOtherState = matcher(OTHER_STATE_TERMS);
+const AZ_CONTEXT = /(?:^|[^a-z])(arizona|ariz\.?|az)(?![a-z])/i;
+const countyMatchers = COUNTIES.map((c) => ({ slug: c.slug, strong: matcher(c.places), weak: c.weakPlaces?.length ? matcher(c.weakPlaces) : null }));
+/** Assigns Arizona counties by place-name matching (ambiguous names need Arizona context). */
+export function matchCounties(hay: string, fromCountyFeed?: string, azFeed = false): string[] {
+  const out = new Set<string>();
+  if (fromCountyFeed) out.add(fromCountyFeed);
+  const az = azFeed || AZ_CONTEXT.test(hay);
+  for (const m of countyMatchers) {
+    if (m.strong(hay)) out.add(m.slug);
+    else if (az && m.weak && m.weak(hay)) out.add(m.slug);
+  }
+  return [...out];
+}
 function isBlockedSource(source: string, link: string) {
   const s = source.toLowerCase();
   let host = ""; try { host = new URL(link).hostname.toLowerCase(); } catch {}
@@ -112,7 +131,12 @@ async function fetchFeed(feed: Feed): Promise<Story[]> {
       if (feed.section) sections.add(feed.section);
       const score = oversightScore(hay);
       if (score >= 3) sections.add("oversight");
-      out.push({ id: normTitle(title), title, link, source, date, snippet, level: feed.level, sections: [...sections], score });
+      if (feed.county && namesOtherState(`${hay} ${source}`) && !AZ_CONTEXT.test(hay)) { if (process.env.NEWS_DEBUG) console.error(`DROP other-state (county feed): ${title}`); continue; }
+      const counties = feed.level === "national" ? [] : matchCounties(`${hay} ${source}`, feed.county, !!feed.county || feed.level === "local");
+      if (feed.level === "local" && !counties.length) counties.push("maricopa");
+      // Routine incident reporting -> Breaking & General News (not filtered out).
+      const breaking = feed.level !== "national" && score < 3 && isBreakingText(title);
+      out.push({ id: normTitle(title), title, link, source, date, snippet, level: feed.level, sections: [...sections], score, counties, breaking });
     }
     return out;
   } catch {
@@ -137,6 +161,8 @@ export async function getAllStories(): Promise<Story[]> {
       if (levelRank[s.level] < levelRank[prev.level]) prev.level = s.level;
       if (!prev.snippet && s.snippet) prev.snippet = s.snippet;
       prev.score = Math.max(prev.score, s.score);
+      prev.counties = [...new Set([...prev.counties, ...s.counties])];
+      prev.breaking = prev.breaking && s.breaking && prev.score < 3;
     }
   }
   const cutoff = Date.now() - 30 * 24 * 3600 * 1000;
@@ -153,5 +179,6 @@ export function oversightWatch(stories: Story[], n = 6) {
     .sort((a, b) => b.score - a.score || b.date.localeCompare(a.date)).slice(0, n);
 }
 
-export const filterBy = (stories: Story[], o: { level?: Level; section?: Section }) =>
-  stories.filter((s) => (!o.level || s.level === o.level) && (!o.section || s.sections.includes(o.section)));
+export const filterBy = (stories: Story[], o: { level?: Level; section?: Section; county?: string; breaking?: boolean }) =>
+  stories.filter((s) => (!o.level || s.level === o.level) && (!o.section || s.sections.includes(o.section))
+    && (!o.county || s.counties.includes(o.county)) && (o.breaking === undefined || s.breaking === o.breaking));
